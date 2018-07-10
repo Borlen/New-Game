@@ -20,11 +20,13 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	player(brd.GetExtent())
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -59,15 +61,17 @@ void Game::UpdateModel()
 					player.Move(Vec2(0, 1));
 					break;
 				case VK_OEM_PLUS:
-					
+					brd.AddCells();
 					break;
 				case VK_OEM_MINUS:
-
+					brd.RemoveCells();
+					player.CheckIfInside();
 					break;
 
 			}
 		}
 	}
+
 	while (!wnd.mouse.IsEmpty())
 	{
 		Mouse::Event mouseEvent = wnd.mouse.Read();
@@ -87,4 +91,12 @@ void Game::ComposeFrame()
 {
 	brd.Draw(gfx);
 	player.Draw(gfx, brd.GetDimension());
+	SpriteCodex::DrawLeftArrow(Graphics::ScreenWidth - 100, 10, gfx);
+	SpriteCodex::DrawUpArrow(Graphics::ScreenWidth - 100, 40, gfx);
+	SpriteCodex::DrawRightArrow(Graphics::ScreenWidth - 100, 70, gfx);
+	SpriteCodex::DrawDownArrow(Graphics::ScreenWidth - 100, 100, gfx);
+	SpriteCodex::DrawPlusSymbol(Graphics::ScreenWidth - 100, 130, gfx);
+	SpriteCodex::DrawMinusSymbol(Graphics::ScreenWidth - 100, 160, gfx);
+	SpriteCodex::DrawMouseScrollUp(Graphics::ScreenWidth - 100, 190, gfx);
+	SpriteCodex::DrawnMouseScrollDown(Graphics::ScreenWidth - 100, 220, gfx);
 }

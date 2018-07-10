@@ -1,16 +1,6 @@
 #include "Board.h"
 #include <assert.h>
 
-void Board::AddRow()
-{
-	extent += Vec2(0, 1);
-}
-
-void Board::AddColumn()
-{
-	extent += Vec2(1, 0);
-}
-
 void Board::Draw(Graphics & gfx) const
 {
 	for (int y = 0; y < int(extent.y * dimension * zoom + 1); y += int(dimension * zoom))
@@ -34,6 +24,11 @@ float Board::GetDimension() const
 	return dimension * zoom;
 }
 
+Vec2 & Board::GetExtent()
+{
+	return extent;
+}
+
 void Board::IncreaseZoom()
 {
 	if (dimension * ((zoom + zoomAdd) * extent.x) < Graphics::ScreenWidth -100 && dimension * ((zoom + zoomAdd) * extent.y) < Graphics::ScreenHeight)
@@ -47,5 +42,21 @@ void Board::DecreaseZoom()
 	if (dimension * ((zoom - zoomSub) * extent.x) > Graphics::ScreenWidth/10 && dimension * ((zoom - zoomSub) * extent.y) > Graphics::ScreenHeight/10)
 	{
 		zoom -= zoomSub;
+	}
+}
+
+void Board::AddCells()
+{
+	if ((extent.x + 1) * dimension * zoom < Graphics::ScreenWidth - 100 && (extent.y + 1) * dimension * zoom < Graphics::ScreenHeight)
+	{
+		extent += Vec2(1, 1);
+	}
+}
+
+void Board::RemoveCells()
+{
+	if (extent.x > 2)
+	{
+		extent -= Vec2(1, 1);
 	}
 }

@@ -6,12 +6,13 @@
 class Board 
 {
 public:
-	void AddRow();
-	void AddColumn();
 	void Draw(Graphics& gfx) const;
 	float GetDimension() const;
+	Vec2& GetExtent();
 	void IncreaseZoom();
 	void DecreaseZoom();
+	void AddCells();
+	void RemoveCells();
 private:
 	static constexpr int dimension = 30;
 	float zoom = 1;
