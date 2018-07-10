@@ -3,25 +3,25 @@
 
 void Board::Draw(Graphics & gfx) const
 {
-	for (int y = 0; y < int(extent.y * dimension * zoom + 1); y += int(dimension * zoom))
+	for (int y = 0; y < extent.y * dimension + 1; y += dimension)
 	{
-		for (int x = 0; x < int(extent.x * dimension * zoom); x++)
+		for (int x = 0; x < extent.x * dimension; x++)
 		{
 			gfx.PutPixel(x,y,color);
 		}
 	}
-	for (int x = 0; x < int(extent.x * dimension * zoom + 1); x += int(dimension * zoom))
+	for (int x = 0; x < extent.x * dimension + 1; x += dimension)
 	{
-		for (int y = 0; y < int(extent.y * dimension * zoom); y++)
+		for (int y = 0; y < extent.y * dimension; y++)
 		{
 			gfx.PutPixel(x, y, color);
 		}
 	}
 }
 
-float Board::GetDimension() const
+int Board::GetDimension() const
 {
-	return dimension * zoom;
+	return dimension;
 }
 
 Vec2 & Board::GetExtent()
@@ -29,11 +29,13 @@ Vec2 & Board::GetExtent()
 	return extent;
 }
 
+/*
 void Board::IncreaseZoom()
 {
 	if (dimension * ((zoom + zoomAdd) * extent.x) < Graphics::ScreenWidth -100 && dimension * ((zoom + zoomAdd) * extent.y) < Graphics::ScreenHeight)
 	{
-		zoom += zoomAdd;
+
+		zoom += 5 * int(zoom / 10 + 1);
 	}
 }
 
@@ -44,10 +46,11 @@ void Board::DecreaseZoom()
 		zoom -= zoomSub;
 	}
 }
+*/
 
 void Board::AddCells()
 {
-	if ((extent.x + 1) * dimension * zoom < Graphics::ScreenWidth - 100 && (extent.y + 1) * dimension * zoom < Graphics::ScreenHeight)
+	if ((extent.x + 1) * dimension < Graphics::ScreenWidth - 100 && (extent.y + 1) * dimension < Graphics::ScreenHeight)
 	{
 		extent += Vec2(1, 1);
 	}

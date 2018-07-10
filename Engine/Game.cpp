@@ -67,11 +67,11 @@ void Game::UpdateModel()
 					brd.RemoveCells();
 					player.CheckIfInside();
 					break;
-
 			}
 		}
 	}
 
+	/*
 	while (!wnd.mouse.IsEmpty())
 	{
 		Mouse::Event mouseEvent = wnd.mouse.Read();
@@ -85,18 +85,11 @@ void Game::UpdateModel()
 			break;
 		}
 	}
+	*/
 }
 
 void Game::ComposeFrame()
 {
 	brd.Draw(gfx);
 	player.Draw(gfx, brd.GetDimension());
-	SpriteCodex::DrawLeftArrow(Graphics::ScreenWidth - 100, 10, gfx);
-	SpriteCodex::DrawUpArrow(Graphics::ScreenWidth - 100, 40, gfx);
-	SpriteCodex::DrawRightArrow(Graphics::ScreenWidth - 100, 70, gfx);
-	SpriteCodex::DrawDownArrow(Graphics::ScreenWidth - 100, 100, gfx);
-	SpriteCodex::DrawPlusSymbol(Graphics::ScreenWidth - 100, 130, gfx);
-	SpriteCodex::DrawMinusSymbol(Graphics::ScreenWidth - 100, 160, gfx);
-	SpriteCodex::DrawMouseScrollUp(Graphics::ScreenWidth - 100, 190, gfx);
-	SpriteCodex::DrawnMouseScrollDown(Graphics::ScreenWidth - 100, 220, gfx);
 }

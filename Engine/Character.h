@@ -7,7 +7,7 @@ class Character
 {
 public:
 	Character(Vec2& in_extent);
-	void Draw(Graphics& gfx, float dimension) const;
+	void Draw(Graphics& gfx, int dimension) const;
 	void Move(const Vec2& dir);
 	void CheckIfInside();
 private:

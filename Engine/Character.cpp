@@ -8,7 +8,7 @@ Character::Character(Vec2& in_extent)
 {
 }
 
-void Character::Draw(Graphics & gfx, float dimension) const
+void Character::Draw(Graphics & gfx, int dimension) const
 {
 	for (int i = int(dimension/6); i < int(dimension - dimension/6) + 1; i++)
 	{
