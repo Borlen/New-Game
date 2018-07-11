@@ -45,6 +45,8 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Character player;
+	Map defaultMap;
 	Board brd;
+	int time = 0;
 	/********************************/
 };

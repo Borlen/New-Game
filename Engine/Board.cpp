@@ -1,162 +1,3 @@
-#include "Board.h"
-#include <assert.h>
-#include "SpriteCodex.h"
-
-Board::Board(Graphics & in_gfx, Vec2& in_characterPos)
-	:
-	gfx(in_gfx),
-	characterPos(in_characterPos)
-{
-	LoadCustomMap();
-}
-
-void Board::Draw() const
-{
-	DrawBorder();
-	DrawTileTextures();
-	DrawTime();
-	DrawCharacterInfo();
-}
-
-int Board::GetDimension() const
-{
-	return dimension;
-}
-
-bool Board::MoveCharacter(const Vec2 & dir)
-{
-	assert(abs(dir.x) + abs(dir.y) == 1);
-	if (dir.x + characterPos.x < 0 || dir.x + characterPos.x >= mapWidth || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= mapHeight)
-	{
-		return false;
-	}
-	else
-	{
-		int timeSpent = GetTimeCost(dir);
-		if (timeSpent == -1)
-		{
-			return false;
-		}
-		if (time + timeSpent > 24)
-		{
-			time += timeSpent - 24;
-		}
-		else
-		{
-			time += timeSpent;
-			angle += 10*timeSpent;
-		}
-		return true;
-	}
-}
-
-void Board::DrawTime() const
-{
-	const int y = 5;
-	const int x = Graphics::ScreenWidth - 55;
-	SpriteCodex::DrawTextTime(x - 50, y-1, gfx);
-	SpriteCodex::DrawTextH(x + 12, y, gfx);
-
-	switch (int(time / 10))
-	{
-	case 2:
-		SpriteCodex::DrawNumber2(x - 10, y, gfx);
-		switch (time % 20)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		}
-		break;
-	case 1:
-		SpriteCodex::DrawNumber1(x - 10, y, gfx);
-		switch (time % 10)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		case 5:
-			SpriteCodex::DrawNumber5(x, y, gfx);
-			break;
-		case 6:
-			SpriteCodex::DrawNumber6(x, y, gfx);
-			break;
-		case 7:
-			SpriteCodex::DrawNumber7(x, y, gfx);
-			break;
-		case 8:
-			SpriteCodex::DrawNumber8(x, y, gfx);
-			break;
-		case 9:
-			SpriteCodex::DrawNumber9(x, y, gfx);
-			break;
-		}
-		break;
-	case 0:
-		SpriteCodex::DrawNumber0(x - 10, y, gfx);
-		switch (time % 10)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		case 5:
-			SpriteCodex::DrawNumber5(x, y, gfx);
-			break;
-		case 6:
-			SpriteCodex::DrawNumber6(x, y, gfx);
-			break;
-		case 7:
-			SpriteCodex::DrawNumber7(x, y, gfx);
-			break;
-		case 8:
-			SpriteCodex::DrawNumber8(x, y, gfx);
-			break;
-		case 9:
-			SpriteCodex::DrawNumber9(x, y, gfx);
-			break;
-		}
-		break;
-	}
-	SpriteCodex::DrawClock(x - 60, y + 30, gfx);
-	gfx.DrawLine(x - 10, y + 80, 40, angle, Colors::White);
-}
-
 void Board::DrawBorder() const
 {
 	for (int y = 0; y <= mapHeight * dimension; y += dimension)
@@ -259,11 +100,36 @@ int Board::GetTimeCost(const Vec2& dir) const
 {
 	int timeSpent = 0;
 	int tileTypeID;
+	int onRoad = 0;
 	for (int i = 0; i < Tiles[int(characterPos.x)][int(characterPos.y)].propertyCount; i++)
 	{
 		tileTypeID = Tiles[int(characterPos.x)][int(characterPos.y)].properties[i];
 		switch (tileTypeID)
 		{
+		case 4:
+			if (dir.x == -1)
+			{
+				timeSpent = 1;
+				onRoad = 4;
+			}
+		case 5:
+			if (dir.x == -1)
+			{
+				timeSpent = 1;
+				onRoad = 5;
+			}
+		case 6:
+			if (dir.x == -1)
+			{
+				timeSpent = 1;
+				onRoad = 6;
+			}
+		case 7:
+			if (dir.x == -1)
+			{
+				timeSpent = 1;
+				onRoad = 7;
+			}
 		case 12:
 			if (dir.x == -1)
 			{
@@ -391,6 +257,8 @@ void Board::LoadCustomMap()
 	Tiles[2][0].AddProperty(16, true);
 	Tiles[2][13].AddProperty(15, true);
 	Tiles[2][14].AddProperty(13, true);
+	Tiles[1][14].AddProperty(14, true);
+	Tiles[1][12].AddProperty(14, true);
 }
 
 void Board::DrawCharacterInfo() const
@@ -485,6 +353,19 @@ void Board::DrawCharacterInfo() const
 		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y + 15, gfx);
 		break;
 	}
+}
+
+bool Board::CharacterIsOnRoad() const
+{
+	for (int i = 0; i < Tiles[int(characterPos.x)][int(characterPos.y)].propertyCount; i++)
+	{
+		int tileType = Tiles[int(characterPos.x)][int(characterPos.y)].properties[i];
+		if (tileType == 4 || tileType == 5 || tileType == 6 || tileType == 7)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 Board::Tile::Tile()

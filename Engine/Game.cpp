@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	player(),
-	brd(gfx,player.GetPos())
+	brd(gfx,player.GetPos(),defaultMap)
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -61,12 +61,6 @@ void Game::UpdateModel()
 				case VK_DOWN:
 					player.Move(Vec2(0, 1), brd.MoveCharacter(Vec2(0, 1)));
 					break;
-				case VK_OEM_PLUS:
-					//brd.AddCells();
-					break;
-				case VK_OEM_MINUS:
-					//brd.RemoveCells();
-					break;
 			}
 		}
 	}
@@ -91,5 +85,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	brd.Draw();
-	player.Draw(gfx, brd.GetDimension());
+	player.Draw(gfx, brd.GetDimension(), brd.CharacterIsOnRoad());
 }
