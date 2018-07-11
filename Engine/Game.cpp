@@ -92,5 +92,5 @@ void Game::ComposeFrame()
 {
 	brd.Draw(gfx);
 	player.Draw(gfx, brd.GetDimension());
-	player.DrawAP(gfx);
+	player.DrawTime(gfx);
 }

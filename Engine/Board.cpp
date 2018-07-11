@@ -93,7 +93,14 @@ int Board::GetTileType(const Vec2& moveTo) const
 	{
 		return 0;
 	}
-	return Tiles[int(moveTo.x)][int(moveTo.y)].properties[0];
+	if (Tiles[int(moveTo.x)][int(moveTo.y)].properties[0] > 0 && Tiles[int(moveTo.x)][int(moveTo.y)].properties[0] < 12)
+	{
+		return Tiles[int(moveTo.x)][int(moveTo.y)].properties[0];
+	}
+	else
+	{
+		return 8;
+	}
 }
 
 

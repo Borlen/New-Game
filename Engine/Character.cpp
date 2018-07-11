@@ -26,7 +26,7 @@ void Character::Move(const Vec2& dir, int idTileType)
 {
 	assert(abs(dir.x) + abs(dir.y) == 1);
 
-	int apCost;
+	int timeSpent;
 	bool canGo = true;
 
 	switch (idTileType)
@@ -35,35 +35,61 @@ void Character::Move(const Vec2& dir, int idTileType)
 			canGo = false;
 			break;
 		case 1:
-			apCost = 1;
+			timeSpent = 3;
 			break;
 		case 2:
-			apCost = 2;
-			break;
-		case 3: 
-			apCost = 3;
-			break;
-		case 4:
-			apCost = 4;
-			break;
-		case 5:
 			canGo = false;
 			break;
+		case 3: 
+			timeSpent = 6;
+			break;
+		case 4:
+			timeSpent = 1;
+			break;
+		case 5:
+			timeSpent = 1;
+			break;
+		case 6:
+			timeSpent = 1;
+			break;
+		case 7:
+			timeSpent = 1;
+			break;
+		case 8:
+			timeSpent = 2;
+			break;
+		case 9:
+			timeSpent = 1;
+			break;
+		case 10:
+			timeSpent = 1;
+			break;
+		case 11:
+			timeSpent = 1;
+			break;
 	}
-	if (canGo && actionPoints - apCost >= 0)
+	if (canGo)
 	{
+		if (time + timeSpent > 24)
+		{
+			time += timeSpent - 24;
+		}
+		else
+		{
+			time += timeSpent;
+		}
+
 		pos += dir;
-		actionPoints -= apCost;
 	}
 }
 
-void Character::DrawAP(Graphics & gfx) const
+void Character::DrawTime(Graphics & gfx) const
 {
-	switch (int(actionPoints / 10))
+	switch (int(time / 10))
 	{
 		case 2:
 			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - 40, 20, gfx);
-			switch (actionPoints % 20)
+			switch (time % 20)
 			{
 			case 0:
 				SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
@@ -84,7 +110,7 @@ void Character::DrawAP(Graphics & gfx) const
 			break;
 		case 1:
 			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - 40, 20, gfx);
-			switch (actionPoints % 10)
+			switch (time % 10)
 			{
 			case 0:
 				SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
@@ -120,7 +146,7 @@ void Character::DrawAP(Graphics & gfx) const
 			break;
 		case 0:
 			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 40, 20, gfx);
-			switch (actionPoints % 10)
+			switch (time % 10)
 			{
 			case 0:
 				SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
@@ -161,3 +187,18 @@ Vec2 & Character::GetPos()
 {
 	return pos;
 }
+
+/*
+0 = Map Border - Unaccessable
+1 = Forest - 3H
+2 = Mountain - Unaccessable
+3 = Swamp - 6H
+4 = LeftRoad - 1H
+5 = TopRoad - 1H
+6 = RightRoad - 1H
+7 = BottomRoad - 1H
+8 = Field - 2A
+9 = Village Size 1 - 1H
+10 = Village Size 2 - 1H
+11 = Village Size 3 - 1H
+*/
