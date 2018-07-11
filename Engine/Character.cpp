@@ -85,6 +85,8 @@ void Character::Move(const Vec2& dir, int idTileType)
 
 void Character::DrawTime(Graphics & gfx) const
 {
+	SpriteCodex::DrawTextTime(Graphics::ScreenWidth - 80, 19, gfx);
+	SpriteCodex::DrawTextH(Graphics::ScreenWidth - 18, 20, gfx);
 	switch (int(time / 10))
 	{
 		case 2:

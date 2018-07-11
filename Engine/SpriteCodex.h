@@ -36,4 +36,6 @@ public:
 	static void DrawVillageSize1(int x, int y, Graphics& gfx);
 	static void DrawVillageSize2(int x, int y, Graphics& gfx);
 	static void DrawVillageSize3(int x, int y, Graphics& gfx);
+	static void DrawTextTime(int x, int y, Graphics & gfx);
+	static void DrawTextH(int x, int y, Graphics & gfx);
 };
