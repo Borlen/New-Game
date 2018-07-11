@@ -26,5 +26,14 @@ public:
 	static void DrawMountain(int x, int y, Graphics& gfx);
 	static void DrawRiver(int x, int y, Graphics& gfx);
 	static void DrawForest(int x, int y, Graphics& gfx);
-	static void DrawPlains(int x, int y, Graphics& gfx);
+	static void DrawSwamp(int x, int y, Graphics& gfx);
+	static void DrawCharacter(int x, int y, Graphics& gfx);
+	static void DrawCharacterWithHorse(int x, int y, Graphics& gfx);
+	static void DrawLeftRoad(int x, int y, Graphics& gfx);
+	static void DrawTopRoad(int x, int y, Graphics& gfx);
+	static void DrawRightRoad(int x, int y, Graphics& gfx);
+	static void DrawBottomRoad(int x, int y, Graphics& gfx);
+	static void DrawVillageSize1(int x, int y, Graphics& gfx);
+	static void DrawVillageSize2(int x, int y, Graphics& gfx);
+	static void DrawVillageSize3(int x, int y, Graphics& gfx);
 };

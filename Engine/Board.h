@@ -12,10 +12,16 @@ public:
 	Vec2 GetMapSize() const;
 	int GetTileType(const Vec2& moveTo) const;
 private:
+	class Tile
+	{
+	public:
+		int properties[20];
+	};
+private:
 	static constexpr int dimension = 25;
 	static constexpr int mapWidth = 15;
 	static constexpr int mapHeight = 15;
-	int Tiles[mapWidth][mapHeight];
+	Tile Tiles[mapWidth][mapHeight];
 	Color color = Colors::White;
 	Graphics& gfx;
 };
