@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	brd(gfx),
-	player(brd.GetMapSize())
+	player()
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -50,16 +50,16 @@ void Game::UpdateModel()
 			switch (key.GetCode()) 
 			{
 				case VK_LEFT:
-					player.Move(Vec2(-1,0), brd.GetTileType(player.GetPos() + Vec2(-1, 0)));
+					player.Move(Vec2(-1,0), brd.MoveCharacter(Vec2(-1, 0), player.GetPos()));
 					break;
 				case VK_UP:
-					player.Move(Vec2(0, -1), brd.GetTileType(player.GetPos() + Vec2(0, -1)));
+					player.Move(Vec2(0, -1), brd.MoveCharacter(Vec2(0, -1), player.GetPos()));
 					break;
 				case VK_RIGHT:
-					player.Move(Vec2(1, 0), brd.GetTileType(player.GetPos() + Vec2(1, 0)));
+					player.Move(Vec2(1, 0), brd.MoveCharacter(Vec2(1, 0), player.GetPos()));
 					break;
 				case VK_DOWN:
-					player.Move(Vec2(0, 1), brd.GetTileType(player.GetPos() + Vec2(0, 1)));
+					player.Move(Vec2(0, 1), brd.MoveCharacter(Vec2(0, 1), player.GetPos()));
 					break;
 				case VK_OEM_PLUS:
 					//brd.AddCells();
@@ -90,7 +90,6 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	brd.Draw(gfx);
+	brd.Draw();
 	player.Draw(gfx, brd.GetDimension());
-	player.DrawTime(gfx);
 }

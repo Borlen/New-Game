@@ -1,19 +1,15 @@
 #pragma once
 
 #include "Graphics.h"
-#include "Board.h"
+#include "Vec2.h"
 
 class Character
 {
 public:
-	Character(Vec2& in_mapSize);
 	void Draw(Graphics& gfx, int dimension) const;
-	void Move(const Vec2& dir, int idTileType);
-	void DrawTime(Graphics& gfx) const;
+	void Move(const Vec2& dir, bool canGo);
 	Vec2& GetPos();
 private:
 	Vec2 pos = { 0.0f,0.0f };
 	Color color = Colors::White;
-	Vec2 mapSize;
-	int time = 0;
 };
