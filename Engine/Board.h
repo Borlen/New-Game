@@ -61,4 +61,5 @@ private:
 	Graphics& gfx;
 	Vec2& characterPos;
 	int time = 0;
+	int angle = 0;
 };

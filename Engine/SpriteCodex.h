@@ -42,4 +42,5 @@ public:
 	static void DrawTextX(int x, int y, Graphics & gfx);
 	static void DrawTextY(int x, int y, Graphics & gfx);
 	static void DrawTextColon(int x, int y, Graphics & gfx);
+	static void DrawClock(int x, int y, Graphics & gfx);
 };

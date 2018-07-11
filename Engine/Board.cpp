@@ -44,6 +44,7 @@ bool Board::MoveCharacter(const Vec2 & dir)
 		else
 		{
 			time += timeSpent;
+			angle += 10*timeSpent;
 		}
 		return true;
 	}
@@ -51,106 +52,109 @@ bool Board::MoveCharacter(const Vec2 & dir)
 
 void Board::DrawTime() const
 {
-	int y = 5;
-	int x = 30;
-	SpriteCodex::DrawTextTime(Graphics::ScreenWidth - 80, y-1, gfx);
-	SpriteCodex::DrawTextH(Graphics::ScreenWidth - 18, y, gfx);
+	const int y = 5;
+	const int x = Graphics::ScreenWidth - 55;
+	SpriteCodex::DrawTextTime(x - 50, y-1, gfx);
+	SpriteCodex::DrawTextH(x + 12, y, gfx);
+
 	switch (int(time / 10))
 	{
 	case 2:
-		SpriteCodex::DrawNumber2(Graphics::ScreenWidth - (x + 10), y, gfx);
+		SpriteCodex::DrawNumber2(x - 10, y, gfx);
 		switch (time % 20)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber0(x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber1(x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber2(x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber3(x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber4(x, y, gfx);
 			break;
 		}
 		break;
 	case 1:
-		SpriteCodex::DrawNumber1(Graphics::ScreenWidth - (x + 10), y, gfx);
+		SpriteCodex::DrawNumber1(x - 10, y, gfx);
 		switch (time % 10)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber0(x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber1(x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber2(x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber3(x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber4(x, y, gfx);
 			break;
 		case 5:
-			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber5(x, y, gfx);
 			break;
 		case 6:
-			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber6(x, y, gfx);
 			break;
 		case 7:
-			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber7(x, y, gfx);
 			break;
 		case 8:
-			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber8(x, y, gfx);
 			break;
 		case 9:
-			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber9(x, y, gfx);
 			break;
 		}
 		break;
 	case 0:
-		SpriteCodex::DrawNumber0(Graphics::ScreenWidth - (x + 10), y, gfx);
+		SpriteCodex::DrawNumber0(x - 10, y, gfx);
 		switch (time % 10)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber0(x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber1(x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber2(x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber3(x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber4(x, y, gfx);
 			break;
 		case 5:
-			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber5(x, y, gfx);
 			break;
 		case 6:
-			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber6(x, y, gfx);
 			break;
 		case 7:
-			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber7(x, y, gfx);
 			break;
 		case 8:
-			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber8(x, y, gfx);
 			break;
 		case 9:
-			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - x, y, gfx);
+			SpriteCodex::DrawNumber9(x, y, gfx);
 			break;
 		}
 		break;
 	}
+	SpriteCodex::DrawClock(x - 60, y + 30, gfx);
+	gfx.DrawLine(x - 10, y + 80, 40, angle, Colors::White);
 }
 
 void Board::DrawBorder() const
