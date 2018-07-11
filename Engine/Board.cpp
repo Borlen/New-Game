@@ -10,27 +10,10 @@ Board::Board(Graphics & in_gfx)
 	{
 		for (int j = 0; j < mapHeight; j++)
 		{
-			Tiles[i][j].AddProperty(8, false);
+			Tiles[i][j].AddProperty(8);
 		}
 	}
-	Tiles[1][0].AddProperty(1, true);
-	Tiles[1][1].AddProperty(2, true);
-	Tiles[1][2].AddProperty(3, true);
-	Tiles[1][3].AddProperty(4, true);
-	Tiles[1][4].AddProperty(5, true);
-	Tiles[1][5].AddProperty(6, true);
-	Tiles[1][6].AddProperty(7, true);
-	Tiles[1][7].AddProperty(8, true);
-	Tiles[1][8].AddProperty(9, true);
-	Tiles[1][9].AddProperty(10, true);
-	Tiles[1][10].AddProperty(11, true);
-	Tiles[1][11].AddProperty(12, true);
-	Tiles[1][12].AddProperty(13, true);
-	Tiles[1][13].AddProperty(14, true);
-	Tiles[1][14].AddProperty(15, true);
-	Tiles[2][0].AddProperty(16, true);
-	Tiles[2][13].AddProperty(15, true);
-	Tiles[2][14].AddProperty(13, true);
+	LoadCustomMap();
 }
 
 void Board::Draw() const
@@ -378,6 +361,28 @@ int Board::GetTimeCost(const Vec2& dir, const Vec2& characterPos) const
 	return timeSpent;
 }
 
+void Board::LoadCustomMap()
+{
+	Tiles[1][0].AddProperty(1, true);
+	Tiles[1][1].AddProperty(2, true);
+	Tiles[1][2].AddProperty(3, true);
+	Tiles[1][3].AddProperty(4, true);
+	Tiles[1][4].AddProperty(5, true);
+	Tiles[1][5].AddProperty(6, true);
+	Tiles[1][6].AddProperty(7, true);
+	Tiles[1][7].AddProperty(8, true);
+	Tiles[1][8].AddProperty(9, true);
+	Tiles[1][9].AddProperty(10, true);
+	Tiles[1][10].AddProperty(11, true);
+	Tiles[1][11].AddProperty(12, true);
+	Tiles[1][12].AddProperty(13, true);
+	Tiles[1][13].AddProperty(14, true);
+	Tiles[1][14].AddProperty(15, true);
+	Tiles[2][0].AddProperty(16, true);
+	Tiles[2][13].AddProperty(15, true);
+	Tiles[2][14].AddProperty(13, true);
+}
+
 Board::Tile::Tile()
 {
 	for (int i = 1; i < Tile::nTypes; i++)
@@ -405,39 +410,35 @@ Board::Tile::Tile()
 void Board::Tile::AddProperty(int propertyID, bool replace)
 {
 	bool canBeAdded = true;
+	bool mainFound = false;
 	int loc = 0;
 
-	if (!(propertyID < 16 && propertyID > 11) && propertyCount > 0)
+	for (int i = 0; i < propertyCount; i++)
 	{
-		canBeAdded = false;
-	}
-
-	int i = 0;
-	while (i < propertyCount && canBeAdded)
-	{
-		if (propertyID == properties[i])
+		if (Main.count(properties[i]) == 1)
 		{
-			canBeAdded = false;
 			loc = i;
+			mainFound = true;
 			break;
 		}
-
-		if (propertyID == 2)
-		{
-			loc = 0;
-			canBeAdded = false;
-		}
-		i++;
 	}
 
-	if (replace)
+	if (mainFound)
 	{
-		for (int i = 0; i < propertyCount; i++)
+		if (Sides.count(propertyID) != 1)
 		{
-			if (Main.count(properties[i]) == 1)
+			canBeAdded = false;
+		}
+
+		int i = 0;
+		while (i < propertyCount && canBeAdded)
+		{
+			if (propertyID == properties[i])
 			{
-				loc = i;
+				canBeAdded = false;
+				replace = false;
 			}
+			i++;
 		}
 	}
 

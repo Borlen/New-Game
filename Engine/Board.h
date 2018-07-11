@@ -15,12 +15,13 @@ public:
 	void DrawBorder() const;
 	void DrawTileTextures() const;
 	int GetTimeCost(const Vec2& dir, const Vec2& characterPos) const;
+	void LoadCustomMap();
 private:
 	class Tile
 	{
 	public:
 		Tile();
-		void AddProperty(int propertyID, bool replace);
+		void AddProperty(int propertyID, bool replace = false);
 		void RemoveProperty(int propertyID);
 		static constexpr int nTypes = 16;
 		int properties[nTypes];
