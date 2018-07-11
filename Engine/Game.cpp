@@ -26,8 +26,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	brd(gfx),
-	player()
+	player(),
+	brd(gfx,player.GetPos())
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -50,16 +50,16 @@ void Game::UpdateModel()
 			switch (key.GetCode()) 
 			{
 				case VK_LEFT:
-					player.Move(Vec2(-1,0), brd.MoveCharacter(Vec2(-1, 0), player.GetPos()));
+					player.Move(Vec2(-1,0), brd.MoveCharacter(Vec2(-1, 0)));
 					break;
 				case VK_UP:
-					player.Move(Vec2(0, -1), brd.MoveCharacter(Vec2(0, -1), player.GetPos()));
+					player.Move(Vec2(0, -1), brd.MoveCharacter(Vec2(0, -1)));
 					break;
 				case VK_RIGHT:
-					player.Move(Vec2(1, 0), brd.MoveCharacter(Vec2(1, 0), player.GetPos()));
+					player.Move(Vec2(1, 0), brd.MoveCharacter(Vec2(1, 0)));
 					break;
 				case VK_DOWN:
-					player.Move(Vec2(0, 1), brd.MoveCharacter(Vec2(0, 1), player.GetPos()));
+					player.Move(Vec2(0, 1), brd.MoveCharacter(Vec2(0, 1)));
 					break;
 				case VK_OEM_PLUS:
 					//brd.AddCells();

@@ -2,17 +2,11 @@
 #include <assert.h>
 #include "SpriteCodex.h"
 
-Board::Board(Graphics & in_gfx)
+Board::Board(Graphics & in_gfx, Vec2& in_characterPos)
 	:
-	gfx(in_gfx)
+	gfx(in_gfx),
+	characterPos(in_characterPos)
 {
-	for (int i = 0; i < mapWidth; i++)
-	{
-		for (int j = 0; j < mapHeight; j++)
-		{
-			Tiles[i][j].AddProperty(8);
-		}
-	}
 	LoadCustomMap();
 }
 
@@ -21,6 +15,7 @@ void Board::Draw() const
 	DrawBorder();
 	DrawTileTextures();
 	DrawTime();
+	DrawCharacterInfo();
 }
 
 int Board::GetDimension() const
@@ -28,7 +23,7 @@ int Board::GetDimension() const
 	return dimension;
 }
 
-bool Board::MoveCharacter(const Vec2 & dir, const Vec2& characterPos)
+bool Board::MoveCharacter(const Vec2 & dir)
 {
 	assert(abs(dir.x) + abs(dir.y) == 1);
 	if (dir.x + characterPos.x < 0 || dir.x + characterPos.x >= mapWidth || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= mapHeight)
@@ -37,7 +32,7 @@ bool Board::MoveCharacter(const Vec2 & dir, const Vec2& characterPos)
 	}
 	else
 	{
-		int timeSpent = GetTimeCost(dir, characterPos);
+		int timeSpent = GetTimeCost(dir);
 		if (timeSpent == -1)
 		{
 			return false;
@@ -56,100 +51,102 @@ bool Board::MoveCharacter(const Vec2 & dir, const Vec2& characterPos)
 
 void Board::DrawTime() const
 {
-	SpriteCodex::DrawTextTime(Graphics::ScreenWidth - 80, 19, gfx);
-	SpriteCodex::DrawTextH(Graphics::ScreenWidth - 18, 20, gfx);
+	int y = 5;
+	int x = 30;
+	SpriteCodex::DrawTextTime(Graphics::ScreenWidth - 80, y-1, gfx);
+	SpriteCodex::DrawTextH(Graphics::ScreenWidth - 18, y, gfx);
 	switch (int(time / 10))
 	{
 	case 2:
-		SpriteCodex::DrawNumber2(Graphics::ScreenWidth - 40, 20, gfx);
+		SpriteCodex::DrawNumber2(Graphics::ScreenWidth - (x + 10), y, gfx);
 		switch (time % 20)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		}
 		break;
 	case 1:
-		SpriteCodex::DrawNumber1(Graphics::ScreenWidth - 40, 20, gfx);
+		SpriteCodex::DrawNumber1(Graphics::ScreenWidth - (x + 10), y, gfx);
 		switch (time % 10)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 5:
-			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 6:
-			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 7:
-			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 8:
-			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 9:
-			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		}
 		break;
 	case 0:
-		SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 40, 20, gfx);
+		SpriteCodex::DrawNumber0(Graphics::ScreenWidth - (x + 10), y, gfx);
 		switch (time % 10)
 		{
 		case 0:
-			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber0(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 1:
-			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber1(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 2:
-			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber2(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 3:
-			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber3(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 4:
-			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber4(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 5:
-			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber5(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 6:
-			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber6(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 7:
-			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber7(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 8:
-			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber8(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		case 9:
-			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - 30, 20, gfx);
+			SpriteCodex::DrawNumber9(Graphics::ScreenWidth - x, y, gfx);
 			break;
 		}
 		break;
@@ -254,7 +251,7 @@ void Board::DrawTileTextures() const
 	}
 }
 
-int Board::GetTimeCost(const Vec2& dir, const Vec2& characterPos) const
+int Board::GetTimeCost(const Vec2& dir) const
 {
 	int timeSpent = 0;
 	int tileTypeID;
@@ -289,7 +286,8 @@ int Board::GetTimeCost(const Vec2& dir, const Vec2& characterPos) const
 			break;
 		}
 	}
-	for (int i = 0; i < Tiles[int(characterPos.x + dir.x)][int(characterPos.y + dir.y)].propertyCount; i++)
+	int i = 0;
+	while (i < Tiles[int(characterPos.x + dir.x)][int(characterPos.y + dir.y)].propertyCount && timeSpent >= 0)
 	{
 		tileTypeID = Tiles[int(characterPos.x + dir.x)][int(characterPos.y + dir.y)].properties[i];
 		switch (tileTypeID)
@@ -298,7 +296,7 @@ int Board::GetTimeCost(const Vec2& dir, const Vec2& characterPos) const
 			timeSpent += 3;
 			break;
 		case 2:
-			timeSpent += -1;
+			timeSpent = -1;
 			break;
 		case 3:
 			timeSpent += 6;
@@ -357,12 +355,20 @@ int Board::GetTimeCost(const Vec2& dir, const Vec2& characterPos) const
 		default:
 			assert(false);
 		}
+		i++;
 	}
 	return timeSpent;
 }
 
 void Board::LoadCustomMap()
 {
+	for (int i = 0; i < mapWidth; i++)
+	{
+		for (int j = 0; j < mapHeight; j++)
+		{
+			Tiles[i][j].AddProperty(8);
+		}
+	}
 	Tiles[1][0].AddProperty(1, true);
 	Tiles[1][1].AddProperty(2, true);
 	Tiles[1][2].AddProperty(3, true);
@@ -383,6 +389,100 @@ void Board::LoadCustomMap()
 	Tiles[2][14].AddProperty(13, true);
 }
 
+void Board::DrawCharacterInfo() const
+{
+	int x = 20;
+	int y = 5;
+	SpriteCodex::DrawTextX(mapWidth * dimension + x, 5, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y, gfx);
+	assert(int(characterPos.x / 10) < 2);
+	if (int((characterPos.x + 1) / 10) == 1)
+	{
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y, gfx);
+	}
+	else
+	{
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y, gfx);
+	}
+	switch (int(characterPos.x + 1) % 10)
+	{
+		case 0:
+			SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 1:
+			SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 2:
+			SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 3:
+			SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 4:
+			SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 5:
+			SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 6:
+			SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 7:
+			SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 8:
+			SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y, gfx);
+			break;
+		case 9:
+			SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y, gfx);
+			break;
+	}
+	SpriteCodex::DrawTextY(mapWidth * dimension + x, y + 15, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y + 15, gfx);
+	assert(int(characterPos.y / 10) < 2);
+	if (int((characterPos.y + 1)/ 10) == 1)
+	{
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y + 15, gfx);
+	}
+	else
+	{
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y + 15, gfx);
+	}
+	switch (int(characterPos.y + 1) % 10)
+	{
+	case 0:
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 1:
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 2:
+		SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 3:
+		SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 4:
+		SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 5:
+		SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 6:
+		SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 7:
+		SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 8:
+		SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 9:
+		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	}
+}
+
 Board::Tile::Tile()
 {
 	for (int i = 1; i < Tile::nTypes; i++)
@@ -400,11 +500,14 @@ Board::Tile::Tile()
 	Main.insert(8);
 	Main.insert(9);
 	Main.insert(10);
+	Main.insert(16);
 
 	Sides.insert(12);
 	Sides.insert(13);
 	Sides.insert(14);
 	Sides.insert(15);
+
+	assert(nTypes == 16);
 }
 
 void Board::Tile::AddProperty(int propertyID, bool replace)

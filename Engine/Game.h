@@ -44,7 +44,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	Board brd;
 	Character player;
+	Board brd;
 	/********************************/
 };

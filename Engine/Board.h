@@ -7,15 +7,16 @@
 class Board 
 {
 public:
-	Board(Graphics& in_gfx);
+	Board(Graphics& in_gfx, Vec2& in_characterPos);
 	void Draw() const;
 	int GetDimension() const;
-	bool MoveCharacter(const Vec2& dir, const Vec2& characterPos);
+	bool MoveCharacter(const Vec2& dir);
 	void DrawTime() const;
 	void DrawBorder() const;
 	void DrawTileTextures() const;
-	int GetTimeCost(const Vec2& dir, const Vec2& characterPos) const;
+	int GetTimeCost(const Vec2& dir) const;
 	void LoadCustomMap();
+	void DrawCharacterInfo() const;
 private:
 	class Tile
 	{
@@ -58,5 +59,6 @@ private:
 	Tile Tiles[mapWidth][mapHeight];
 	Color color = Colors::White;
 	Graphics& gfx;
+	Vec2& characterPos;
 	int time = 0;
 };

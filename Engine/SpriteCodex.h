@@ -39,4 +39,7 @@ public:
 	static void DrawField(int x, int y, Graphics& gfx);
 	static void DrawTextTime(int x, int y, Graphics & gfx);
 	static void DrawTextH(int x, int y, Graphics & gfx);
+	static void DrawTextX(int x, int y, Graphics & gfx);
+	static void DrawTextY(int x, int y, Graphics & gfx);
+	static void DrawTextColon(int x, int y, Graphics & gfx);
 };

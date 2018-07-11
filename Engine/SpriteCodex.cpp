@@ -4168,3 +4168,125 @@ void SpriteCodex::DrawTextH(int x, int y, Graphics & gfx)
 	gfx.PutPixel(7 + x, 9 + y, 159, 159, 159);
 
 }
+
+void SpriteCodex::DrawTextX(int x, int y, Graphics & gfx)
+{
+	gfx.PutPixel(0 + x, 0 + y, 60, 60, 60);
+	gfx.PutPixel(1 + x, 0 + y, 255, 255, 255);
+	gfx.PutPixel(2 + x, 0 + y, 72, 72, 72);
+	gfx.PutPixel(5 + x, 0 + y, 4, 4, 4);
+	gfx.PutPixel(6 + x, 0 + y, 211, 211, 211);
+	gfx.PutPixel(7 + x, 0 + y, 151, 151, 151);
+	gfx.PutPixel(1 + x, 1 + y, 167, 167, 167);
+	gfx.PutPixel(2 + x, 1 + y, 215, 215, 215);
+	gfx.PutPixel(3 + x, 1 + y, 4, 4, 4);
+	gfx.PutPixel(5 + x, 1 + y, 104, 104, 104);
+	gfx.PutPixel(6 + x, 1 + y, 239, 239, 239);
+	gfx.PutPixel(7 + x, 1 + y, 24, 24, 24);
+	gfx.PutPixel(1 + x, 2 + y, 28, 28, 28);
+	gfx.PutPixel(2 + x, 2 + y, 247, 247, 247);
+	gfx.PutPixel(3 + x, 2 + y, 116, 116, 116);
+	gfx.PutPixel(4 + x, 2 + y, 16, 16, 16);
+	gfx.PutPixel(5 + x, 2 + y, 231, 231, 231);
+	gfx.PutPixel(6 + x, 2 + y, 116, 116, 116);
+	gfx.PutPixel(2 + x, 3 + y, 124, 124, 124);
+	gfx.PutPixel(3 + x, 3 + y, 239, 239, 239);
+	gfx.PutPixel(4 + x, 3 + y, 159, 159, 159);
+	gfx.PutPixel(5 + x, 3 + y, 215, 215, 215);
+	gfx.PutPixel(6 + x, 3 + y, 4, 4, 4);
+	gfx.PutPixel(2 + x, 4 + y, 8, 8, 8);
+	gfx.PutPixel(3 + x, 4 + y, 227, 227, 227);
+	gfx.PutPixel(4 + x, 4 + y, 255, 255, 255);
+	gfx.PutPixel(5 + x, 4 + y, 76, 76, 76);
+	gfx.PutPixel(2 + x, 5 + y, 24, 24, 24);
+	gfx.PutPixel(3 + x, 5 + y, 243, 243, 243);
+	gfx.PutPixel(4 + x, 5 + y, 251, 251, 251);
+	gfx.PutPixel(5 + x, 5 + y, 108, 108, 108);
+	gfx.PutPixel(2 + x, 6 + y, 163, 163, 163);
+	gfx.PutPixel(3 + x, 6 + y, 199, 199, 199);
+	gfx.PutPixel(4 + x, 6 + y, 108, 108, 108);
+	gfx.PutPixel(5 + x, 6 + y, 239, 239, 239);
+	gfx.PutPixel(6 + x, 6 + y, 20, 20, 20);
+	gfx.PutPixel(1 + x, 7 + y, 60, 60, 60);
+	gfx.PutPixel(2 + x, 7 + y, 255, 255, 255);
+	gfx.PutPixel(3 + x, 7 + y, 56, 56, 56);
+	gfx.PutPixel(4 + x, 7 + y, 4, 4, 4);
+	gfx.PutPixel(5 + x, 7 + y, 219, 219, 219);
+	gfx.PutPixel(6 + x, 7 + y, 155, 155, 155);
+	gfx.PutPixel(0 + x, 8 + y, 4, 4, 4);
+	gfx.PutPixel(1 + x, 8 + y, 203, 203, 203);
+	gfx.PutPixel(2 + x, 8 + y, 163, 163, 163);
+	gfx.PutPixel(5 + x, 8 + y, 76, 76, 76);
+	gfx.PutPixel(6 + x, 8 + y, 251, 251, 251);
+	gfx.PutPixel(7 + x, 8 + y, 52, 52, 52);
+	gfx.PutPixel(0 + x, 9 + y, 104, 104, 104);
+	gfx.PutPixel(1 + x, 9 + y, 243, 243, 243);
+	gfx.PutPixel(2 + x, 9 + y, 24, 24, 24);
+	gfx.PutPixel(6 + x, 9 + y, 191, 191, 191);
+	gfx.PutPixel(7 + x, 9 + y, 187, 187, 187);
+
+}
+
+void SpriteCodex::DrawTextY(int x, int y, Graphics & gfx)
+{
+	gfx.PutPixel(0 + x, 0 + y, 139, 139, 139);
+	gfx.PutPixel(1 + x, 0 + y, 231, 231, 231);
+	gfx.PutPixel(2 + x, 0 + y, 8, 8, 8);
+	gfx.PutPixel(5 + x, 0 + y, 24, 24, 24);
+	gfx.PutPixel(6 + x, 0 + y, 247, 247, 247);
+	gfx.PutPixel(7 + x, 0 + y, 92, 92, 92);
+	gfx.PutPixel(0 + x, 1 + y, 24, 24, 24);
+	gfx.PutPixel(1 + x, 1 + y, 247, 247, 247);
+	gfx.PutPixel(2 + x, 1 + y, 112, 112, 112);
+	gfx.PutPixel(5 + x, 1 + y, 143, 143, 143);
+	gfx.PutPixel(6 + x, 1 + y, 219, 219, 219);
+	gfx.PutPixel(7 + x, 1 + y, 4, 4, 4);
+	gfx.PutPixel(1 + x, 2 + y, 143, 143, 143);
+	gfx.PutPixel(2 + x, 2 + y, 231, 231, 231);
+	gfx.PutPixel(3 + x, 2 + y, 8, 8, 8);
+	gfx.PutPixel(4 + x, 2 + y, 24, 24, 24);
+	gfx.PutPixel(5 + x, 2 + y, 247, 247, 247);
+	gfx.PutPixel(6 + x, 2 + y, 96, 96, 96);
+	gfx.PutPixel(1 + x, 3 + y, 24, 24, 24);
+	gfx.PutPixel(2 + x, 3 + y, 247, 247, 247);
+	gfx.PutPixel(3 + x, 3 + y, 92, 92, 92);
+	gfx.PutPixel(4 + x, 3 + y, 131, 131, 131);
+	gfx.PutPixel(5 + x, 3 + y, 219, 219, 219);
+	gfx.PutPixel(6 + x, 3 + y, 4, 4, 4);
+	gfx.PutPixel(2 + x, 4 + y, 143, 143, 143);
+	gfx.PutPixel(3 + x, 4 + y, 207, 207, 207);
+	gfx.PutPixel(4 + x, 4 + y, 231, 231, 231);
+	gfx.PutPixel(5 + x, 4 + y, 96, 96, 96);
+	gfx.PutPixel(2 + x, 5 + y, 24, 24, 24);
+	gfx.PutPixel(3 + x, 5 + y, 247, 247, 247);
+	gfx.PutPixel(4 + x, 5 + y, 219, 219, 219);
+	gfx.PutPixel(5 + x, 5 + y, 4, 4, 4);
+	gfx.PutPixel(3 + x, 6 + y, 191, 191, 191);
+	gfx.PutPixel(4 + x, 6 + y, 131, 131, 131);
+	gfx.PutPixel(3 + x, 7 + y, 191, 191, 191);
+	gfx.PutPixel(4 + x, 7 + y, 128, 128, 128);
+	gfx.PutPixel(3 + x, 8 + y, 191, 191, 191);
+	gfx.PutPixel(4 + x, 8 + y, 128, 128, 128);
+	gfx.PutPixel(3 + x, 9 + y, 191, 191, 191);
+	gfx.PutPixel(4 + x, 9 + y, 128, 128, 128);
+
+}
+
+void SpriteCodex::DrawTextColon(int x, int y, Graphics & gfx)
+{
+	gfx.PutPixel(1 + x, 0 + y, 28, 28, 28);
+	gfx.PutPixel(0 + x, 1 + y, 56, 56, 56);
+	gfx.PutPixel(1 + x, 1 + y, 255, 255, 255);
+	gfx.PutPixel(2 + x, 1 + y, 88, 88, 88);
+	gfx.PutPixel(0 + x, 2 + y, 24, 24, 24);
+	gfx.PutPixel(1 + x, 2 + y, 159, 159, 159);
+	gfx.PutPixel(2 + x, 2 + y, 48, 48, 48);
+	gfx.PutPixel(0 + x, 6 + y, 24, 24, 24);
+	gfx.PutPixel(1 + x, 6 + y, 187, 187, 187);
+	gfx.PutPixel(2 + x, 6 + y, 48, 48, 48);
+	gfx.PutPixel(0 + x, 7 + y, 52, 52, 52);
+	gfx.PutPixel(1 + x, 7 + y, 255, 255, 255);
+	gfx.PutPixel(2 + x, 7 + y, 88, 88, 88);
+	gfx.PutPixel(1 + x, 8 + y, 28, 28, 28);
+
+}
