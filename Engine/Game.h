@@ -40,6 +40,8 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void Load();
+	void Save();
 	/********************************/
 private:
 	MainWindow& wnd;

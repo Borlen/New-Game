@@ -5,12 +5,13 @@
 #include "SpriteCodex.h"
 #include "Pos.h"
 #include "Time.h"
+#include <fstream>
 
 class Map
 {
 public:
 	Map(Pos& in_charPos, Graphics& in_gfx, Time& in_time);
-	//void LoadMap(Map& in_map);
+	void Load(std::string filePath);
 	void DrawGrid() const;
 	void DrawCharacter() const;
 	void DrawTileTextures() const;
@@ -24,6 +25,7 @@ private:
 	public:
 		Tile();
 		void AddType(int in_type);
+		void AddRiver(char side);
 		void Draw(int x, int y, Graphics& gfx) const;
 		bool IsPassable() const;
 		int GetTimeCost() const;
@@ -36,10 +38,10 @@ private:
 		};
 		Type type;
 		int typeID;
-		bool riverLeft = true;
-		bool riverTop = true;
-		bool riverRight = true;
-		bool riverBottom = true;
+		bool riverLeft = false;
+		bool riverTop = false;
+		bool riverRight = false;
+		bool riverBottom = false;
 
 		/*
 		Default: River can be added
@@ -67,7 +69,7 @@ private:
 	static constexpr int width = 15;
 	static constexpr int height = 15;
 	Tile tiles[width][height];
-	Color color = Colors::White;
+	const Color color = Colors::White;
 	Pos& characterPos;
 	Graphics& gfx;
 	Time& time;

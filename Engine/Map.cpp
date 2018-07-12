@@ -1,6 +1,6 @@
 #include "Map.h"
 #include <assert.h>
-#include <random>
+#include "File.h"
 
 Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 	:
@@ -8,6 +8,61 @@ Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 	gfx(in_gfx),
 	time(in_time)
 {
+	Load("map.txt"); //For testing purposes
+}
+
+void Map::Load(std::string filePath)
+{
+	std::string ch = File::GetString(filePath);
+	std::string tileType;
+	bool continues = false;
+	int x = 0;
+	int y = 0;
+
+	for (int i = 0; i < ch.length() && y < height; i++)
+	{
+		if (ch[i] == 76 || ch[i] == 84 || ch[i] == 82 || ch[i] == 66)
+		{
+			tiles[x][y].AddRiver(ch[i]);
+		}
+
+		if (ch[i] < 58 && ch[i] > 47)
+		{
+
+			if (continues)
+			{
+				tileType += ch[i];
+			}
+			else
+			{
+				tileType = ch[i];
+				continues = true;
+			}
+
+		}
+		else
+		{
+			if (continues)
+			{
+				tiles[x][y].AddType(std::stoi(tileType));
+				continues = false;
+
+				if (x == width - 1)
+				{
+					x -= width - 1;
+					y++;
+				}
+				else
+				{
+					x++;
+				}
+			}
+		}
+	}
+	if (y < height) 
+	{
+
+	}
 }
 
 void Map::DrawGrid() const
@@ -76,10 +131,7 @@ int Map::GetHeight() const
 
 Map::Tile::Tile()
 {
-	std::random_device rd;
-	std::mt19937 rng (rd());
-	std::uniform_int_distribution<int> typeDist(1,12);
-	AddType(typeDist(rng));  //For testing purposes, remake later
+	//AddType(8);
 }
 
 void Map::Tile::AddType(int in_type)
@@ -137,6 +189,25 @@ void Map::Tile::AddType(int in_type)
 		break;
 	default:
 		assert(false);
+		break;
+	}
+}
+
+void Map::Tile::AddRiver(char side)
+{
+	switch (side)
+	{
+	case 76: //L
+		riverLeft = true;
+			break;
+	case 84: //T
+		riverTop = true;
+		break;
+	case 82: //R
+		riverRight = true;
+		break;
+	case 66: //B
+		riverBottom = true;
 		break;
 	}
 }

@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "SpriteCodex.h"
+#include <fstream>
 
 Game::Game(MainWindow& wnd)
 	:
@@ -83,6 +84,10 @@ void Game::UpdateModel()
 		}
 	}
 	*/
+}
+
+void Game::Load()
+{
 }
 
 void Game::ComposeFrame()
