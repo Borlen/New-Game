@@ -1,5 +1,5 @@
 #include "UserInterface.h"
-
+/*
 void UserInterface::DrawTime() const
 {
 	const int y = 5;
@@ -109,9 +109,112 @@ void UserInterface::DrawTime() const
 
 void UserInterface::DrawCharacterInfo() const
 {
+	int x = 20;
+	int y = 5;
+	SpriteCodex::DrawTextX(mapWidth * dimension + x, 5, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y, gfx);
+	assert(int(characterPos.x / 10) < 2);
+	if (int((characterPos.x + 1) / 10) == 1)
+	{
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y, gfx);
+	}
+	else
+	{
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y, gfx);
+	}
+	switch (int(characterPos.x + 1) % 10)
+	{
+	case 0:
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 1:
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 2:
+		SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 3:
+		SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 4:
+		SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 5:
+		SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 6:
+		SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 7:
+		SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 8:
+		SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	case 9:
+		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y, gfx);
+		break;
+	}
+	SpriteCodex::DrawTextY(mapWidth * dimension + x, y + 15, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y + 15, gfx);
+	assert(int(characterPos.y / 10) < 2);
+	if (int((characterPos.y + 1) / 10) == 1)
+	{
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y + 15, gfx);
+	}
+	else
+	{
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y + 15, gfx);
+	}
+	switch (int(characterPos.y + 1) % 10)
+	{
+	case 0:
+		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 1:
+		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 2:
+		SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 3:
+		SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 4:
+		SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 5:
+		SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 6:
+		SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 7:
+		SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 8:
+		SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	case 9:
+		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y + 15, gfx);
+		break;
+	}
 }
 
-bool UserInterface::MoveCharacter(const Vec2 & dir)
+bool Board::CharacterIsOnRoad() const
+{
+	for (int i = 0; i < Tiles[int(characterPos.x)][int(characterPos.y)].propertyCount; i++)
+	{
+		int tileType = Tiles[int(characterPos.x)][int(characterPos.y)].properties[i];
+		if (tileType == 4 || tileType == 5 || tileType == 6 || tileType == 7)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UserInterface::MoveCharacter(const Pos & dir)
 {
 	assert(abs(dir.x) + abs(dir.y) == 1);
 	if (dir.x + characterPos.x < 0 || dir.x + characterPos.x >= mapWidth || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= mapHeight)
@@ -142,3 +245,4 @@ bool UserInterface::MoveCharacter(const Vec2 & dir)
 		return true;
 	}
 }
+*/

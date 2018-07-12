@@ -136,7 +136,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
@@ -155,10 +154,9 @@
     <ClInclude Include="SpriteCodex.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="UserInterface.h" />
-    <ClInclude Include="Vec2.h" />
+    <ClInclude Include="Pos.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="DXErr.cpp" />
@@ -173,7 +171,7 @@
     <ClCompile Include="SpriteCodex.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="UserInterface.cpp" />
-    <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="Pos.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
