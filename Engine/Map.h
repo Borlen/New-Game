@@ -26,11 +26,13 @@ private:
 		void AddType(int in_type);
 		void Draw(int x, int y, Graphics& gfx) const;
 		bool IsPassable() const;
+		int GetTimeCost() const;
 	private:
 		struct Type
 		{
 			void(*Draw)(int x, int y, Graphics& gfx);
 			bool passable = true;
+			int timeCost;
 		};
 		Type type;
 		int typeID;

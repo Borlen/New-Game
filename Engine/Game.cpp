@@ -26,8 +26,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
+	time(0, 0, 0, 0, 0),
 	map(player.GetPos(), gfx, time),
-	time(0,0,0,0,0),
 	userInterface(time, player, map, gfx)
 {
 	wnd.kbd.DisableAutorepeat();

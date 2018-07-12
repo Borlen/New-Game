@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <assert.h>
+#include <random>
 
 Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 	:
@@ -52,8 +53,8 @@ void Map::MoveCharacter(Pos& dir) const
 	{
 		if (tiles[dir.x + characterPos.x][dir.y + characterPos.y].IsPassable())
 		{
+			time.Add(tiles[dir.x + characterPos.x][dir.y + characterPos.y].GetTimeCost(),'h');
 			characterPos += dir;
-			time.Add(1,'h');
 		}
 	}
 }
@@ -75,7 +76,10 @@ int Map::GetHeight() const
 
 Map::Tile::Tile()
 {
-	AddType(9);  //For testing purposes, remake later
+	std::random_device rd;
+	std::mt19937 rng (rd());
+	std::uniform_int_distribution<int> typeDist(1,12);
+	AddType(typeDist(rng));  //For testing purposes, remake later
 }
 
 void Map::Tile::AddType(int in_type)
@@ -85,39 +89,51 @@ void Map::Tile::AddType(int in_type)
 	{
 	case 1:
 		type.Draw = &SpriteCodex::DrawForest;
+		type.timeCost = 3;
 		break;
 	case 2:
 		type.Draw = &SpriteCodex::DrawMountain;
 		type.passable = false;
+		type.timeCost = 0;
 		break;
 	case 3:
 		type.Draw = &SpriteCodex::DrawSwamp;
+		type.timeCost = 6;
 		break;
 	case 4:
 		type.Draw = &SpriteCodex::DrawLeftRoad;
+		type.timeCost = 1;
 		break;
 	case 5:
 		type.Draw = &SpriteCodex::DrawTopRoad;
+		type.timeCost = 1;
 		break;
 	case 6:
 		type.Draw = &SpriteCodex::DrawRightRoad;
+		type.timeCost = 1;
 		break;
 	case 7:
 		type.Draw = &SpriteCodex::DrawBottomRoad;
+		type.timeCost = 1;
 		break;
 	case 8:
+		type.timeCost = 2;
 		break;
 	case 9:
 		type.Draw = &SpriteCodex::DrawVillageSize1;
+		type.timeCost = 1;
 		break;
 	case 10:
 		type.Draw = &SpriteCodex::DrawVillageSize2;
+		type.timeCost = 1;
 		break;
 	case 11:
 		type.Draw = &SpriteCodex::DrawVillageSize3;
+		type.timeCost = 1;
 		break;
 	case 12:
 		type.Draw = &SpriteCodex::DrawField;
+		type.timeCost = 2;
 		break;
 	default:
 		assert(false);
@@ -165,4 +181,9 @@ void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 bool Map::Tile::IsPassable() const
 {
 	return type.passable;
+}
+
+int Map::Tile::GetTimeCost() const
+{
+	return type.timeCost;
 }

@@ -10,8 +10,6 @@ UserInterface::UserInterface(Time& in_time, Character& in_player, Map& in_map, G
 	gfx(in_gfx)
 {
 }
-
-
 void UserInterface::DrawTime() const
 {
 	const int y = 5;
