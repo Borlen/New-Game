@@ -3,11 +3,12 @@
 std::string File::GetString(std::string filePath)
 {
 	std::string string;
-	std::ifstream file("game.txt");
+	std::ifstream file(filePath);
 
 	string = file.get();
 	if (!file.good())
 	{
+		//Add warning empty/nonexistant file?
 		return "";
 	}
 

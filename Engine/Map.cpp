@@ -61,7 +61,7 @@ void Map::Load(std::string filePath)
 	}
 	if (y < height) 
 	{
-
+		//Add warning?
 	}
 }
 
@@ -131,7 +131,7 @@ int Map::GetHeight() const
 
 Map::Tile::Tile()
 {
-	//AddType(8);
+	AddType(8);
 }
 
 void Map::Tile::AddType(int in_type)
@@ -153,39 +153,87 @@ void Map::Tile::AddType(int in_type)
 		type.timeCost = 6;
 		break;
 	case 4:
-		type.Draw = &SpriteCodex::DrawLeftRoad;
-		type.timeCost = 1;
-		break;
-	case 5:
-		type.Draw = &SpriteCodex::DrawTopRoad;
-		type.timeCost = 1;
-		break;
-	case 6:
-		type.Draw = &SpriteCodex::DrawRightRoad;
-		type.timeCost = 1;
-		break;
-	case 7:
-		type.Draw = &SpriteCodex::DrawBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 8:
 		type.timeCost = 2;
 		break;
-	case 9:
+	case 5:
 		type.Draw = &SpriteCodex::DrawVillageSize1;
 		type.timeCost = 1;
 		break;
-	case 10:
+	case 6:
 		type.Draw = &SpriteCodex::DrawVillageSize2;
 		type.timeCost = 1;
 		break;
-	case 11:
+	case 7:
 		type.Draw = &SpriteCodex::DrawVillageSize3;
 		type.timeCost = 1;
 		break;
-	case 12:
+	case 8:
 		type.Draw = &SpriteCodex::DrawField;
 		type.timeCost = 2;
+		break;
+	case 9:
+		type.Draw = &SpriteCodex::DrawLeftRoad;
+		type.timeCost = 1;
+		break;
+	case 10:
+		type.Draw = &SpriteCodex::DrawLeftTopRoad;
+		type.timeCost = 1;
+		break;
+	case 11:
+		type.Draw = &SpriteCodex::DrawLeftRightRoad;
+		type.timeCost = 1;
+		break;
+	case 12:
+		type.Draw = &SpriteCodex::DrawLeftBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 13:
+		type.Draw = &SpriteCodex::DrawLeftBottomRightRoad;
+		type.timeCost = 1;
+		break;
+	case 14:
+		type.Draw = &SpriteCodex::DrawLeftTopRightRoad;
+		type.timeCost = 1;
+		break;
+	case 15:
+		type.Draw = &SpriteCodex::DrawLeftTopBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 16:
+		type.Draw = &SpriteCodex::DrawLeftTopRightBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 17:
+		type.Draw = &SpriteCodex::DrawTopBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 18:
+		type.Draw = &SpriteCodex::DrawTopRoad;
+		type.timeCost = 1;
+		break;
+	case 19:
+		type.Draw = &SpriteCodex::DrawTopRightRoad;
+		type.timeCost = 1;
+		break;
+	case 20:
+		type.Draw = &SpriteCodex::DrawTopBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 21:
+		type.Draw = &SpriteCodex::DrawTopRightBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 22:
+		type.Draw = &SpriteCodex::DrawRightRoad;
+		type.timeCost = 1;
+		break;
+	case 23:
+		type.Draw = &SpriteCodex::DrawRightBottomRoad;
+		type.timeCost = 1;
+		break;
+	case 24:
+		type.Draw = &SpriteCodex::DrawBottomRoad;
+		type.timeCost = 1;
 		break;
 	default:
 		assert(false);

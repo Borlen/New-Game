@@ -50,19 +50,30 @@ private:
 		1 = Forest - 3H
 		2 = Mountain - Unaccessable, nothing can be addedd
 		3 = Swamp - 6H
-		4 = LeftRoad - 1H
-		5 = TopRoad - 1H
-		6 = RightRoad - 1H
-		7 = BottomRoad - 1H
-		8 = Plains - 2H
-		9 = Village Size 1 - 1H
-		10 = Village Size 2 - 1H
-		11 = Village Size 3 - 1H
+		4 = Plains - 2H
+		5 = Village Size 1 - 1H
+		6 = Village Size 2 - 1H
+		7 = Village Size 3 - 1H
+		8 = Field = 2H
+		9 = LeftRoad - 1H
+		10 = LeftTopRoad - 1H
+		11 = LeftRightRoad - 1H
+		12 = LeftBottomRoad - 1H
+		13 = LeftBottomRightRoad - 1H
+		14 = LeftTopRightRoad - 1H
+		15 = LeftTopBottomRoad - 1H
+		16 = LeftTopRightBottomRoad - 1H
+		17 = TopRoad - 1H
+		18 = TopRightRoad - 1H
+		19 - TopBottomRoad - 1H
+		20 = TopRightBottomRoad - 1H
+		21 = RightRoad - 1H
+		22 = RightBottomRoad - 1H
+		23 = BottomRoad - 1H
 		LeftRiver - 2H
 		TopRiver - 2H
 		RightRiver - 2H
 		BottomRiver - 2H
-		12 = Field = 2H
 		*/
 	};
 	static constexpr int dimension = 25;
