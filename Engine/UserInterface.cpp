@@ -1,5 +1,17 @@
 #include "UserInterface.h"
-/*
+#include "SpriteCodex.h"
+#include <assert.h>
+
+UserInterface::UserInterface(Time& in_time, Character& in_player, Map& in_map, Graphics& in_gfx)
+	:
+	time(in_time),
+	player(in_player),
+	map(in_map),
+	gfx(in_gfx)
+{
+}
+
+
 void UserInterface::DrawTime() const
 {
 	const int y = 5;
@@ -7,11 +19,11 @@ void UserInterface::DrawTime() const
 	SpriteCodex::DrawTextTime(x - 50, y - 1, gfx);
 	SpriteCodex::DrawTextH(x + 12, y, gfx);
 
-	switch (int(time / 10))
+	switch (int(time.Get('h') / 10))
 	{
 	case 2:
 		SpriteCodex::DrawNumber2(x - 10, y, gfx);
-		switch (time % 20)
+		switch (int(time.Get('h')) % 20)
 		{
 		case 0:
 			SpriteCodex::DrawNumber0(x, y, gfx);
@@ -32,7 +44,7 @@ void UserInterface::DrawTime() const
 		break;
 	case 1:
 		SpriteCodex::DrawNumber1(x - 10, y, gfx);
-		switch (time % 10)
+		switch (int(time.Get('h')) % 10)
 		{
 		case 0:
 			SpriteCodex::DrawNumber0(x, y, gfx);
@@ -68,7 +80,7 @@ void UserInterface::DrawTime() const
 		break;
 	case 0:
 		SpriteCodex::DrawNumber0(x - 10, y, gfx);
-		switch (time % 10)
+		switch (int(time.Get('h')) % 10)
 		{
 		case 0:
 			SpriteCodex::DrawNumber0(x, y, gfx);
@@ -104,101 +116,109 @@ void UserInterface::DrawTime() const
 		break;
 	}
 	SpriteCodex::DrawClock(x - 42, y + 20, gfx);
-	gfx.DrawLine(x - 14, y + 50, 15, angle - 90, Colors::White);
+	gfx.DrawLine(x - 14, y + 50, 15, (int(time.Get('h')) % 12) * 30 - 90, Colors::White);
 }
-
 void UserInterface::DrawCharacterInfo() const
 {
+	int mapWidth = map.GetWidth();
+	int mapHeight = map.GetHeight();
+	int mapDimension = map.GetDimension();
+	Pos& characterPos = player.GetPos();
 	int x = 20;
 	int y = 5;
-	SpriteCodex::DrawTextX(mapWidth * dimension + x, 5, gfx);
-	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y, gfx);
+	SpriteCodex::DrawTextX(mapWidth * mapDimension + x, 5, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * mapDimension + x + 10, y, gfx);
 	assert(int(characterPos.x / 10) < 2);
 	if (int((characterPos.x + 1) / 10) == 1)
 	{
-		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y, gfx);
+		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 17, y, gfx);
 	}
 	else
 	{
-		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y, gfx);
+		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 17, y, gfx);
 	}
 	switch (int(characterPos.x + 1) % 10)
 	{
 	case 0:
-		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 1:
-		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 2:
-		SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber2(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 3:
-		SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber3(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 4:
-		SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber4(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 5:
-		SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber5(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 6:
-		SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber6(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 7:
-		SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber7(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 8:
-		SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber8(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	case 9:
-		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y, gfx);
+		SpriteCodex::DrawNumber9(mapWidth * mapDimension + x + 27, y, gfx);
 		break;
 	}
-	SpriteCodex::DrawTextY(mapWidth * dimension + x, y + 15, gfx);
-	SpriteCodex::DrawTextColon(mapWidth * dimension + x + 10, y + 15, gfx);
+	SpriteCodex::DrawTextY(mapWidth * mapDimension + x, y + 15, gfx);
+	SpriteCodex::DrawTextColon(mapWidth * mapDimension + x + 10, y + 15, gfx);
 	assert(int(characterPos.y / 10) < 2);
 	if (int((characterPos.y + 1) / 10) == 1)
 	{
-		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 17, y + 15, gfx);
+		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 17, y + 15, gfx);
 	}
 	else
 	{
-		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 17, y + 15, gfx);
+		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 17, y + 15, gfx);
 	}
 	switch (int(characterPos.y + 1) % 10)
 	{
 	case 0:
-		SpriteCodex::DrawNumber0(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 1:
-		SpriteCodex::DrawNumber1(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 2:
-		SpriteCodex::DrawNumber2(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber2(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 3:
-		SpriteCodex::DrawNumber3(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber3(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 4:
-		SpriteCodex::DrawNumber4(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber4(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 5:
-		SpriteCodex::DrawNumber5(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber5(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 6:
-		SpriteCodex::DrawNumber6(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber6(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 7:
-		SpriteCodex::DrawNumber7(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber7(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 8:
-		SpriteCodex::DrawNumber8(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber8(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	case 9:
-		SpriteCodex::DrawNumber9(mapWidth * dimension + x + 27, y + 15, gfx);
+		SpriteCodex::DrawNumber9(mapWidth * mapDimension + x + 27, y + 15, gfx);
 		break;
 	}
+}
+/*
+void UserInterface::DrawCharacterInfo() const
+{
+	
 }
 
 bool Board::CharacterIsOnRoad() const

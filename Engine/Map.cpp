@@ -1,26 +1,27 @@
 #include "Map.h"
 #include <assert.h>
 
-Map::Map(Pos & in_charPos, Graphics & in_gfx)
+Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 	:
 	characterPos(in_charPos),
-	gfx(in_gfx)
+	gfx(in_gfx),
+	time(in_time)
 {
 }
 
 void Map::DrawGrid() const
 {
 	{
-		for (int y = 0; y <= mapHeight * dimension; y += dimension)
+		for (int y = 0; y <= height * dimension; y += dimension)
 		{
-			for (int x = 0; x < mapWidth * dimension; x++)
+			for (int x = 0; x < width * dimension; x++)
 			{
 				gfx.PutPixel(x, y, color);
 			}
 		}
-		for (int x = 0; x <= mapWidth * dimension; x += dimension)
+		for (int x = 0; x <= width * dimension; x += dimension)
 		{
-			for (int y = 0; y < mapHeight * dimension; y++)
+			for (int y = 0; y < height * dimension; y++)
 			{
 				gfx.PutPixel(x, y, color);
 			}
@@ -36,13 +37,40 @@ void Map::DrawCharacter() const
 
 void Map::DrawTileTextures() const
 {
-	for (int x = 0; x < mapWidth; x++)
+	for (int x = 0; x < width; x++)
 	{
-		for (int y = 0; y < mapHeight; y++)
+		for (int y = 0; y < height; y++)
 		{
-			Tiles[x][y].Draw(x * dimension, y * dimension, gfx);
+			tiles[x][y].Draw(x * dimension, y * dimension, gfx);
 		}
 	}
+}
+
+void Map::MoveCharacter(Pos& dir) const
+{
+	if (!(dir.x + characterPos.x < 0 || dir.x + characterPos.x >= width || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= height))
+	{
+		if (tiles[dir.x + characterPos.x][dir.y + characterPos.y].IsPassable())
+		{
+			characterPos += dir;
+			time.Add(1,'h');
+		}
+	}
+}
+
+int Map::GetDimension() const
+{
+	return dimension;
+}
+
+int Map::GetWidth() const
+{
+	return width;
+}
+
+int Map::GetHeight() const
+{
+	return height;
 }
 
 Map::Tile::Tile()
@@ -52,6 +80,7 @@ Map::Tile::Tile()
 
 void Map::Tile::AddType(int in_type)
 {
+	typeID = in_type;
 	switch (in_type)
 	{
 	case 1:
@@ -59,6 +88,7 @@ void Map::Tile::AddType(int in_type)
 		break;
 	case 2:
 		type.Draw = &SpriteCodex::DrawMountain;
+		type.passable = false;
 		break;
 	case 3:
 		type.Draw = &SpriteCodex::DrawSwamp;
@@ -97,7 +127,10 @@ void Map::Tile::AddType(int in_type)
 
 void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 {
-	type.Draw(x, y, gfx);
+	if (typeID != 8)
+	{
+		type.Draw(x, y, gfx);
+	}
 
 	if (riverLeft)
 	{
@@ -127,4 +160,9 @@ void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 			gfx.PutPixel(i, y + dimension, 0, 180, 255);
 		}
 	}
+}
+
+bool Map::Tile::IsPassable() const
+{
+	return type.passable;
 }

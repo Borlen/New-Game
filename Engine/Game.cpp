@@ -26,7 +26,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	map(player.GetPos(), gfx)
+	map(player.GetPos(), gfx, time),
+	time(0,0,0,0,0),
+	userInterface(time, player, map, gfx)
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -46,21 +48,23 @@ void Game::UpdateModel()
 		Keyboard::Event key = wnd.kbd.ReadKey();
 		if (key.IsRelease()) 
 		{
+			Pos dir;
 			switch (key.GetCode()) 
 			{
 				case VK_LEFT:
-					player.Move(Pos(-1,0));
+					dir = Pos(-1, 0);
 					break;
 				case VK_UP:
-					player.Move(Pos(0, -1));
+					dir = Pos(0, -1);
 					break;
 				case VK_RIGHT:
-					player.Move(Pos(1, 0));
+					dir = Pos(1, 0);
 					break;
 				case VK_DOWN:
-					player.Move(Pos(0, 1));
+					dir = Pos(0, 1);
 					break;
 			}
+			map.MoveCharacter(dir);
 		}
 	}
 
@@ -86,4 +90,6 @@ void Game::ComposeFrame()
 	map.DrawGrid();
 	map.DrawTileTextures();
 	map.DrawCharacter();
+	userInterface.DrawTime();
+	userInterface.DrawCharacterInfo();
 }

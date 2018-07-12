@@ -153,6 +153,7 @@
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="SpriteCodex.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Pos.h" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Pos.cpp" />
   </ItemGroup>

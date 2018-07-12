@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Character.h"
 #include "Map.h"
+#include "Time.h"
 #include "UserInterface.h"
 
 class Game
@@ -47,7 +48,8 @@ private:
 	/*  User Variables              */
 	Character player;
 	Map map;
-	float time = 0;
+	Time time;
+	UserInterface userInterface;
 	/********************************/
 };
 

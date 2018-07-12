@@ -4,16 +4,20 @@
 #include "Graphics.h"
 #include "SpriteCodex.h"
 #include "Pos.h"
+#include "Time.h"
 
 class Map
 {
 public:
-	Map(Pos& in_charPos, Graphics& in_gfx);
+	Map(Pos& in_charPos, Graphics& in_gfx, Time& in_time);
 	//void LoadMap(Map& in_map);
 	void DrawGrid() const;
 	void DrawCharacter() const;
 	void DrawTileTextures() const;
-	//int GetDimension() const;
+	void MoveCharacter(Pos& dir) const;
+	int GetDimension() const;
+	int GetWidth() const;
+	int GetHeight() const;
 private:
 	class Tile
 	{
@@ -21,12 +25,15 @@ private:
 		Tile();
 		void AddType(int in_type);
 		void Draw(int x, int y, Graphics& gfx) const;
+		bool IsPassable() const;
 	private:
 		struct Type
 		{
 			void(*Draw)(int x, int y, Graphics& gfx);
+			bool passable = true;
 		};
 		Type type;
+		int typeID;
 		bool riverLeft = true;
 		bool riverTop = true;
 		bool riverRight = true;
@@ -55,10 +62,11 @@ private:
 		*/
 	};
 	static constexpr int dimension = 25;
-	static constexpr int mapWidth = 15;
-	static constexpr int mapHeight = 15;
-	Tile Tiles[mapWidth][mapHeight];
+	static constexpr int width = 15;
+	static constexpr int height = 15;
+	Tile tiles[width][height];
 	Color color = Colors::White;
 	Pos& characterPos;
 	Graphics& gfx;
+	Time& time;
 };
