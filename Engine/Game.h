@@ -27,6 +27,7 @@
 #include "Map.h"
 #include "Time.h"
 #include "UserInterface.h"
+#include "Surface.h"
 
 class Game
 {
@@ -52,5 +53,8 @@ private:
 	Time time;
 	Map map;
 	UserInterface userInterface;
+
+	std::vector<Vei2> positions;
+	Surface s = { "Images\\link90x90.bmp" };
 	/********************************/
 };

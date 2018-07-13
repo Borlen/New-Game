@@ -22,6 +22,8 @@
 #include "Game.h"
 #include "SpriteCodex.h"
 #include <fstream>
+#include <random>
+#include "SpriteEffect.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -32,6 +34,14 @@ Game::Game(MainWindow& wnd)
 	userInterface(time, player, map, gfx)
 {
 	wnd.kbd.DisableAutorepeat();
+	std::mt19937 rng(69);
+	std::uniform_int_distribution<int> xd(0, Graphics::ScreenWidth - s.GetWidth() - 1);
+	std::uniform_int_distribution<int> yd(0, Graphics::ScreenHeight - s.GetHeight() - 1);
+
+	for (int i = 0; i < 50; i++)
+	{
+		positions.push_back({ xd(rng),yd(rng) });
+	}
 }
 
 void Game::Go()
@@ -97,4 +107,8 @@ void Game::ComposeFrame()
 	map.DrawCharacter();
 	userInterface.DrawTime();
 	userInterface.DrawCharacterInfo();
+	for (const auto& pos : positions)
+	{
+		gfx.DrawSprite(pos.x, pos.y, s, SpriteEffect::Copy{});
+	}
 }
