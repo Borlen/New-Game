@@ -16,6 +16,7 @@ void Map::Load(std::string filePath)
 	std::string ch = File::GetString(filePath);
 	std::string tileType;
 	bool continues = false;
+	bool creatingRoad = false;
 	int x = 0;
 	int y = 0;
 
@@ -23,10 +24,53 @@ void Map::Load(std::string filePath)
 	{
 		if (ch[i] == 76 || ch[i] == 84 || ch[i] == 82 || ch[i] == 66)
 		{
-			tiles[x][y].AddRiver(ch[i]);
+			if (continues)
+			{
+				tiles[x][y].AddRiver(ch[i]);
+			}
+			else if (creatingRoad)
+			{
+				tiles[x][y].AddRoad(ch[i]);
+			}
+		}
+		else
+		{
+			if (continues)
+			{
+				continues = false;
+				if (x == width - 1)
+				{
+					x -= width - 1;
+					y++;
+				}
+				else
+				{
+					x++;
+				}
+			}
+			if (creatingRoad)
+			{
+				creatingRoad = false;
+				if (x == width - 1)
+				{
+					x -= width - 1;
+					y++;
+				}
+				else
+				{
+					x++;
+				}
+			}
 		}
 
-		if (ch[i] < 58 && ch[i] > 47)
+		if (ch[i] == 57)
+		{
+			tileType = ch[i];
+			tiles[x][y].AddType(std::stoi(tileType));
+			creatingRoad = true;
+		}
+
+		if (ch[i] < 57 && ch[i] > 47)
 		{
 
 			if (continues)
@@ -172,67 +216,6 @@ void Map::Tile::AddType(int in_type)
 		type.timeCost = 2;
 		break;
 	case 9:
-		type.Draw = &SpriteCodex::DrawLeftRoad;
-		type.timeCost = 1;
-		break;
-	case 10:
-		type.Draw = &SpriteCodex::DrawLeftTopRoad;
-		type.timeCost = 1;
-		break;
-	case 11:
-		type.Draw = &SpriteCodex::DrawLeftRightRoad;
-		type.timeCost = 1;
-		break;
-	case 12:
-		type.Draw = &SpriteCodex::DrawLeftBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 13:
-		type.Draw = &SpriteCodex::DrawLeftBottomRightRoad;
-		type.timeCost = 1;
-		break;
-	case 14:
-		type.Draw = &SpriteCodex::DrawLeftTopRightRoad;
-		type.timeCost = 1;
-		break;
-	case 15:
-		type.Draw = &SpriteCodex::DrawLeftTopBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 16:
-		type.Draw = &SpriteCodex::DrawLeftTopRightBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 17:
-		type.Draw = &SpriteCodex::DrawTopBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 18:
-		type.Draw = &SpriteCodex::DrawTopRoad;
-		type.timeCost = 1;
-		break;
-	case 19:
-		type.Draw = &SpriteCodex::DrawTopRightRoad;
-		type.timeCost = 1;
-		break;
-	case 20:
-		type.Draw = &SpriteCodex::DrawTopBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 21:
-		type.Draw = &SpriteCodex::DrawTopRightBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 22:
-		type.Draw = &SpriteCodex::DrawRightRoad;
-		type.timeCost = 1;
-		break;
-	case 23:
-		type.Draw = &SpriteCodex::DrawRightBottomRoad;
-		type.timeCost = 1;
-		break;
-	case 24:
-		type.Draw = &SpriteCodex::DrawBottomRoad;
 		type.timeCost = 1;
 		break;
 	default:
@@ -260,9 +243,28 @@ void Map::Tile::AddRiver(char side)
 	}
 }
 
+void Map::Tile::AddRoad(char side)
+{
+	switch (side)
+	{
+	case 76: //L
+		roadLeft = true;
+		break;
+	case 84: //T
+		roadTop = true;
+		break;
+	case 82: //R
+		roadRight = true;
+		break;
+	case 66: //B
+		roadBottom = true;
+		break;
+	}
+}
+
 void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 {
-	if (typeID != 8)
+	if (typeID != 8 && typeID != 9)
 	{
 		type.Draw(x, y, gfx);
 	}
@@ -294,6 +296,23 @@ void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 		{
 			gfx.PutPixel(i, y + dimension, 0, 180, 255);
 		}
+	}
+
+	if (roadLeft)
+	{
+		SpriteCodex::DrawLeftRoad(x, y, gfx);
+	}
+	if (roadTop)
+	{
+		SpriteCodex::DrawTopRoad(x, y, gfx);
+	}
+	if (roadRight)
+	{
+		SpriteCodex::DrawRightRoad(x, y, gfx);
+	}
+	if (roadBottom)
+	{
+		SpriteCodex::DrawBottomRoad(x, y, gfx);
 	}
 }
 

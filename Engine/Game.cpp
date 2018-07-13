@@ -22,8 +22,6 @@
 #include "Game.h"
 #include "SpriteCodex.h"
 #include <fstream>
-#include <random>
-#include "SpriteEffect.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -31,17 +29,17 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	time(0, 0, 0, 0, 0),
 	map(player.GetPos(), gfx, time),
-	userInterface(time, player, map, gfx)
+	userInterface(time, player, map, gfx),
+	H("Images/Fonts/Chars/CapitalH.bmp"),
+	e("Images/Fonts/Chars/E.bmp"),
+	l("Images/Fonts/Chars/L.bmp"),
+	o("Images/Fonts/Chars/O.bmp"),
+	W("Images/Fonts/Chars/CapitalW.bmp"),
+	r("Images/Fonts/Chars/R.bmp"),
+	d("Images/Fonts/Chars/D.bmp"),
+	exM("Images/Fonts/Chars/exM.bmp")
 {
 	wnd.kbd.DisableAutorepeat();
-	std::mt19937 rng(69);
-	std::uniform_int_distribution<int> xd(0, Graphics::ScreenWidth - s.GetWidth() - 1);
-	std::uniform_int_distribution<int> yd(0, Graphics::ScreenHeight - s.GetHeight() - 1);
-
-	for (int i = 0; i < 50; i++)
-	{
-		positions.push_back({ xd(rng),yd(rng) });
-	}
 }
 
 void Game::Go()
@@ -107,8 +105,16 @@ void Game::ComposeFrame()
 	map.DrawCharacter();
 	userInterface.DrawTime();
 	userInterface.DrawCharacterInfo();
-	for (const auto& pos : positions)
-	{
-		gfx.DrawSprite(pos.x, pos.y, s, SpriteEffect::Copy{});
-	}
+
+	gfx.DrawSprite(500, 500, H, SpriteEffect::Chroma{Colors::Black});
+	gfx.DrawSprite(510, 500, e, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(520, 500, l, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(525, 500, l, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(530, 500, o, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(560, 500, W, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(570, 500, o, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(580, 500, r, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(590, 500, l, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(600, 500, d, SpriteEffect::Chroma{ Colors::Black });
+	gfx.DrawSprite(610, 500, exM, SpriteEffect::Chroma{ Colors::Black });
 }

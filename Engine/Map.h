@@ -26,6 +26,7 @@ private:
 		Tile();
 		void AddType(int in_type);
 		void AddRiver(char side);
+		void AddRoad(char side);
 		void Draw(int x, int y, Graphics& gfx) const;
 		bool IsPassable() const;
 		int GetTimeCost() const;
@@ -42,6 +43,11 @@ private:
 		bool riverTop = false;
 		bool riverRight = false;
 		bool riverBottom = false;
+		
+		bool roadLeft = false;
+		bool roadTop = false;
+		bool roadRight = false;
+		bool roadBottom = false;
 
 		/*
 		Default: River can be added
@@ -55,27 +61,11 @@ private:
 		6 = Village Size 2 - 1H
 		7 = Village Size 3 - 1H
 		8 = Field = 2H
-		9 = LeftRoad - 1H
-		10 = LeftTopRoad - 1H
-		11 = LeftRightRoad - 1H
-		12 = LeftBottomRoad - 1H
-		13 = LeftBottomRightRoad - 1H
-		14 = LeftTopRightRoad - 1H
-		15 = LeftTopBottomRoad - 1H
-		16 = LeftTopRightBottomRoad - 1H
-		17 = TopRoad - 1H
-		18 = TopRightRoad - 1H
-		19 - TopBottomRoad - 1H
-		20 = TopRightBottomRoad - 1H
-		21 = RightRoad - 1H
-		22 = RightBottomRoad - 1H
-		23 = BottomRoad - 1H
-		LeftRiver - 2H
-		TopRiver - 2H
-		RightRiver - 2H
-		BottomRiver - 2H
+		9 = Road - 1H
+		River += 1H
 		*/
 	};
+
 	static constexpr int dimension = 25;
 	static constexpr int width = 15;
 	static constexpr int height = 15;

@@ -53,8 +53,13 @@ private:
 	Time time;
 	Map map;
 	UserInterface userInterface;
-
-	std::vector<Vei2> positions;
-	Surface s = { "Images\\link90x90.bmp" };
+	Surface H;
+	Surface e;
+	Surface l;
+	Surface o;
+	Surface W;
+	Surface r;
+	Surface d;
+	Surface exM;
 	/********************************/
 };
