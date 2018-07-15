@@ -16,12 +16,12 @@ public:
 	void DrawGrid() const;
 	void DrawCharacter(const std::string fileName) const;
 	void DrawTileTextures() const;
-	void MoveCharacter(Pos& dir) const;
+	void MoveCharacter(Pos& dir);
 	void MoveCharacterOut();
 	void MoveCharacterIn();
+	void Move(const Pos dir);
 	int GetDimension() const;
-	int GetWidth() const;
-	int GetHeight() const;
+	Pos& GetSize() const;
 	std::string getTileType(const Pos& tilePos) const;
 private:
 	class Tile
@@ -73,9 +73,13 @@ private:
 	};
 
 	static constexpr int dimension = 25;
-	static constexpr int width = 15;
-	static constexpr int height = 15;
-	Tile tiles[width][height];
+	int width = 20;
+	int height = 20;
+	int xMapSize = 400;
+	int yMapSize = 300;
+	int xOffset = 0;
+	int yOffset = 0;
+	Tile *tiles = new Tile[width*height];
 	const Color color = Colors::White;
 	Pos& characterPos;
 	Graphics& gfx;

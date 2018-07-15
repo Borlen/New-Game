@@ -18,6 +18,8 @@ void Map::Load(std::string filePath)
 	std::string tileType;
 	bool continues = false;
 	bool creatingRoad = false;
+	bool xSizeIsSet = false;
+	bool ySizeIsSet = false;
 	int x = 0;
 	int y = 0;
 
@@ -27,11 +29,11 @@ void Map::Load(std::string filePath)
 		{
 			if (continues)
 			{
-				tiles[x][y].AddRiver(ch[i]);
+				tiles[x + y * width].AddRiver(ch[i]);
 			}
 			else if (creatingRoad)
 			{
-				tiles[x][y].AddRoad(ch[i]);
+				tiles[x + y * width].AddRoad(ch[i]);
 			}
 		}
 		else
@@ -67,13 +69,12 @@ void Map::Load(std::string filePath)
 		if (ch[i] == 57)
 		{
 			tileType = ch[i];
-			tiles[x][y].AddType(std::stoi(tileType));
+			tiles[x + y * width].AddType(std::stoi(tileType));
 			creatingRoad = true;
 		}
 
 		if (ch[i] < 57 && ch[i] > 47)
 		{
-
 			if (continues)
 			{
 				tileType += ch[i];
@@ -89,17 +90,27 @@ void Map::Load(std::string filePath)
 		{
 			if (continues)
 			{
-				tiles[x][y].AddType(std::stoi(tileType));
-				continues = false;
-
-				if (x == width - 1)
+				if (!xSizeIsSet || !ySizeIsSet)
 				{
-					x -= width - 1;
-					y++;
+					if (!xSizeIsSet)
+						width = std::stoi(tileType);
+					if (!ySizeIsSet)
+						height = std::stoi(tileType);
 				}
 				else
 				{
-					x++;
+					tiles[x + y * width].AddType(std::stoi(tileType));
+					continues = false;
+
+					if (x == width - 1)
+					{
+						x -= width - 1;
+						y++;
+					}
+					else
+					{
+						x++;
+					}
 				}
 			}
 		}
@@ -120,16 +131,16 @@ void Map::Draw()
 void Map::DrawGrid() const
 {
 	{
-		for (int y = 0; y <= height * dimension; y += dimension)
+		for (int y = 0; y <= yMapSize; y += dimension)
 		{
-			for (int x = 0; x < width * dimension; x++)
+			for (int x = 0; x < xMapSize; x++)
 			{
 				gfx.PutPixel(x, y, color);
 			}
 		}
-		for (int x = 0; x <= width * dimension; x += dimension)
+		for (int x = 0; x <= xMapSize; x += dimension)
 		{
-			for (int y = 0; y < height * dimension; y++)
+			for (int y = 0; y < yMapSize; y++)
 			{
 				gfx.PutPixel(x, y, color);
 			}
@@ -144,25 +155,49 @@ void Map::DrawCharacter(const std::string fileName) const
 
 void Map::DrawTileTextures() const
 {
-	for (int x = 0; x < width; x++)
+	for (int x = 0; x * dimension < xMapSize; x++)
 	{
-		for (int y = 0; y < height; y++)
+		for (int y = 0; y * dimension < yMapSize; y++)
 		{
-			tiles[x][y].Draw(x * dimension, y * dimension, gfx);
+			tiles[x + xOffset + y * width + yOffset * width].Draw(x * dimension, y * dimension, gfx);
 		}
 	}
 }
 
-void Map::MoveCharacter(Pos& dir) const
+void Map::MoveCharacter(Pos& dir)
 {
-	if (!(dir.x + characterPos.x < 0 || dir.x + characterPos.x >= width || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= height))
+	//Calculate center of the map, coordinates of visible area of the map and coordinates of map edge
+	Pos futureCharacterPos = characterPos + dir;
+	const int xMapCenter = int(xMapSize / dimension / 2);
+	const int yMapCenter = int(yMapSize / dimension / 2);
+	const int xVisibleArea = xMapSize + xOffset;
+	const int yVisibleArea = yMapSize + yOffset;
+	const int xMapEdge = width * dimension;
+	const int yMapEdge = height * dimension;
+
+	//Check if the half of the map character is on has a visible edge, if not, move the map
+	//towards the edge instead of moving the character
+	if (futureCharacterPos.x > xMapCenter && xVisibleArea < xMapEdge || futureCharacterPos.x < xMapCenter && xOffset * dimension > 0 || futureCharacterPos.y > yMapCenter && yVisibleArea < yMapEdge || futureCharacterPos.y < yMapCenter && yOffset * dimension > 0)
 	{
-		if (tiles[dir.x + characterPos.x][dir.y + characterPos.y].IsPassable())
+		Move(dir);
+	} 
+	else
+	{
+		if (!(dir.x + characterPos.x < 0 || dir.x + characterPos.x >= width || dir.y + characterPos.y < 0 || dir.y + characterPos.y >= height))
 		{
-			time.Add(tiles[dir.x + characterPos.x][dir.y + characterPos.y].GetTimeCost(),'h');
-			characterPos += dir;
+			if (tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].IsPassable())
+			{
+				time.Add(tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].GetTimeCost(), 'h');
+				characterPos += dir;
+			}
 		}
-	}
+	}	
+}
+
+void Map::Move(Pos dir)
+{
+	xOffset += dir.x;
+	yOffset += dir.y;
 }
 
 int Map::GetDimension() const
@@ -170,20 +205,15 @@ int Map::GetDimension() const
 	return dimension;
 }
 
-int Map::GetWidth() const
+Pos & Map::GetSize() const
 {
-	return width;
-}
-
-int Map::GetHeight() const
-{
-	return height;
+	return Pos(xMapSize, yMapSize);
 }
 
 std::string Map::getTileType(const Pos & tilePos) const
 {
 
-	switch (tiles[characterPos.x][characterPos.y].GetType())
+	switch (tiles[characterPos.x + characterPos.y * width].GetType())
 	{
 	case 1:
 		return ("Forest");

@@ -25,14 +25,12 @@ void UserInterface::DrawTime(const Font& theChosenFont) const
 
 void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
 {
-	int mapWidth = map.GetWidth();
-	int mapHeight = map.GetHeight();
-	int mapDimension = map.GetDimension();
+	Pos mapSize = map.GetSize();
 	Pos& characterPos = player.GetPos();
 	int x = 20;
 	int y = 5;
-	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapWidth * mapDimension + x, y }, color, gfx);
-	theChosenFont.DrawText(map.getTileType(characterPos), { mapWidth * mapDimension + x, y + 50 }, color, gfx);
+	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapSize.x + x, y }, color, gfx);
+	theChosenFont.DrawText(map.getTileType(characterPos), { mapSize.x + x, y + 50 }, color, gfx);
 }
 
 void UserInterface::Draw(const Font& theChosenFont) const
