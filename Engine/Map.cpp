@@ -139,7 +139,7 @@ void Map::DrawGrid() const
 
 void Map::DrawCharacter(const std::string fileName) const
 {
-	gfx.DrawSprite(characterPos.x * dimension, +characterPos.y * dimension, { "Images/TileTextures/Character/Character.bmp" }, SpriteEffect::Copy());
+	gfx.DrawSprite(characterPos.x * dimension + 1, +characterPos.y * dimension + 1, { "Images/TileTextures/Character/Character.bmp" }, SpriteEffect::Chroma(Colors::Black));
 }
 
 void Map::DrawTileTextures() const
@@ -183,8 +183,9 @@ int Map::GetHeight() const
 Map::Tile::Tile()
 {
 	AddType(8);
-	const std::string basePath = "Images/TileTextures";
 }
+
+const std::string Map::Tile::basePath = "Images/TileTextures";
 
 void Map::Tile::AddType(int in_type)
 {
@@ -192,43 +193,45 @@ void Map::Tile::AddType(int in_type)
 	switch (in_type)
 	{
 	case 1:
-		texture = { basePath + "Nature/Forest.bmp" };
+		texture = { basePath + "/Nature/Forest.bmp" };
 		timeCost = 3;
 		break;
 	case 2:
-		texture = { basePath + "Nature/Mountain.bmp" };
+		texture = { basePath + "/Nature/Mountain.bmp" };
 		passable = false;
 		timeCost = 0;
 		break;
 	case 3:
-		texture = { basePath + "Nature/Swamp.bmp" };
+		texture = { basePath + "/Nature/Swamp.bmp" };
 		timeCost = 6;
 		break;
 	case 4:
-		texture = { basePath + "Error/Error.bmp" };
+		texture = { basePath + "/Error/Error.bmp" };
 		timeCost = 2;
 		break;
 	case 5:
-		texture = { basePath + "Village/VillageSize1.bmp" };
+		texture = { basePath + "/Village/VillageSize1.bmp" };
 		timeCost = 1;
 		break;
 	case 6:
-		texture = { basePath + "Village/VillageSize2.bmp" };
+		texture = { basePath + "/Village/VillageSize2.bmp" };
 		timeCost = 1;
 		break;
 	case 7:
-		texture = { basePath + "Village/VillageSize3.bmp" };
+		texture = { basePath + "/Village/VillageSize3.bmp" };
 		timeCost = 1;
 		break;
 	case 8:
-		texture = { basePath + "Village/Field.bmp" };
+		texture = { basePath + "/Village/Field.bmp" };
 		timeCost = 2;
 		break;
 	case 9:
-		texture = { basePath + "Road/Road.bmp" };
+		texture = { basePath + "/Error/Error.bmp" };
 		timeCost = 1;
 		break;
 	default:
+		texture = { basePath + "/Error/Error.bmp" };
+		timeCost = 0;
 		assert(false);
 		break;
 	}
@@ -276,62 +279,67 @@ void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 {
 	if (typeID != 8 && typeID != 9)
 	{
-		type.Draw(x, y, gfx);
+		gfx.DrawSprite(x, y, texture, SpriteEffect::Chroma(Colors::Black));
 	}
 
-	if (riverLeft)
+	if (typeID == 8)
 	{
-		for (int i = y + 1; i < y + dimension; i++)
+		if (riverLeft)
 		{
-			gfx.PutPixel(x, i, 0, 180, 255);
+			for (int i = y + 1; i < y + dimension; i++)
+			{
+				gfx.PutPixel(x, i, 0, 180, 255);
+			}
+		}
+		if (riverTop)
+		{
+			for (int i = x + 1; i < x + dimension; i++)
+			{
+				gfx.PutPixel(i, y, 0, 180, 255);
+			}
+		}
+		if (riverRight)
+		{
+			for (int i = y + 1; i < y + dimension; i++)
+			{
+				gfx.PutPixel(x + dimension, i, 0, 180, 255);
+			}
+		}
+		if (riverBottom)
+		{
+			for (int i = x + 1; i < x + dimension; i++)
+			{
+				gfx.PutPixel(i, y + dimension, 0, 180, 255);
+			}
 		}
 	}
-	if (riverTop)
+	else if (typeID == 9)
 	{
-		for (int i = x + 1; i < x + dimension; i++)
+		if (roadLeft)
 		{
-			gfx.PutPixel(i, y, 0, 180, 255);
+			gfx.DrawSprite(x, y, { basePath + "/Road/LeftRoad.bmp" }, SpriteEffect::Chroma(Colors::Black));
 		}
-	}
-	if (riverRight)
-	{
-		for (int i = y + 1; i < y + dimension; i++)
+		if (roadTop)
 		{
-			gfx.PutPixel(x + dimension, i, 0, 180, 255);
+			gfx.DrawSprite(x, y, { basePath + "/Road/TopRoad.bmp" }, SpriteEffect::Chroma(Colors::Black));
 		}
-	}
-	if (riverBottom)
-	{
-		for (int i = x + 1; i < x + dimension; i++)
+		if (roadRight)
 		{
-			gfx.PutPixel(i, y + dimension, 0, 180, 255);
+			gfx.DrawSprite(x, y, { basePath + "/Road/RightRoad.bmp" }, SpriteEffect::Chroma(Colors::Black));
 		}
-	}
-
-	if (roadLeft)
-	{
-		SpriteCodex::DrawLeftRoad(x, y, gfx);
-	}
-	if (roadTop)
-	{
-		SpriteCodex::DrawTopRoad(x, y, gfx);
-	}
-	if (roadRight)
-	{
-		SpriteCodex::DrawRightRoad(x, y, gfx);
-	}
-	if (roadBottom)
-	{
-		SpriteCodex::DrawBottomRoad(x, y, gfx);
+		if (roadBottom)
+		{
+			gfx.DrawSprite(x, y, { basePath + "/Road/LeftRoad.bmp" }, SpriteEffect::Chroma(Colors::Black));
+		}
 	}
 }
 
 bool Map::Tile::IsPassable() const
 {
-	return type.passable;
+	return passable;
 }
 
 int Map::Tile::GetTimeCost() const
 {
-	return type.timeCost;
+	return timeCost;
 }

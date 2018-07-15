@@ -64,7 +64,7 @@ private:
 		5 = Village Size 1 - 1H
 		6 = Village Size 2 - 1H
 		7 = Village Size 3 - 1H
-		8 = Field = 2H
+		8 = Field - 2H
 		9 = Road - 1H
 		River += 1H
 		*/
