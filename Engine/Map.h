@@ -2,7 +2,7 @@
 #include <set>
 #include "Colors.h"
 #include "Graphics.h"
-#include "SpriteCodex.h"
+#include "Surface.h"
 #include "Pos.h"
 #include "Time.h"
 #include <fstream>
@@ -12,10 +12,13 @@ class Map
 public:
 	Map(Pos& in_charPos, Graphics& in_gfx, Time& in_time);
 	void Load(std::string filePath);
+	void Draw();
 	void DrawGrid() const;
-	void DrawCharacter() const;
+	void DrawCharacter(const std::string fileName) const;
 	void DrawTileTextures() const;
 	void MoveCharacter(Pos& dir) const;
+	void MoveCharacterOut();
+	void MoveCharacterIn();
 	int GetDimension() const;
 	int GetWidth() const;
 	int GetHeight() const;
@@ -31,14 +34,12 @@ private:
 		bool IsPassable() const;
 		int GetTimeCost() const;
 	private:
-		struct Type
-		{
-			void(*Draw)(int x, int y, Graphics& gfx);
-			bool passable = true;
-			int timeCost;
-		};
-		Type type;
+		Surface texture;
+
+		bool passable = true;
+		int timeCost;
 		int typeID;
+
 		bool riverLeft = false;
 		bool riverTop = false;
 		bool riverRight = false;
@@ -48,6 +49,9 @@ private:
 		bool roadTop = false;
 		bool roadRight = false;
 		bool roadBottom = false;
+
+		//Path to folder containing tile textures
+		static const std::string basePath;
 
 		/*
 		Default: River can be added

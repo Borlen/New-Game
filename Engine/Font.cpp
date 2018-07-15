@@ -2,23 +2,25 @@
 #include <cassert>
 #include "SpriteEffect.h"
 
-Font::Font(const std::string& filename, Color chroma)
+Font::Font(const std::string& filename, int glyphWidth, int glyphHeight, char firstChar, char lastChar, Color chroma)
 	:
 	surface(filename),
-	// calculate glyph dimensions from bitmap dimensions
-	glyphWidth(surface.GetWidth() / nColumns),
-	glyphHeight(surface.GetHeight() / nRows),
-	chroma(chroma)
+	chroma(chroma),
+	glyphWidth(glyphWidth),
+	glyphHeight(glyphHeight),
+	firstChar(firstChar),
+	lastChar(lastChar)
 {
-	// verify that bitmap had valid dimensions
-	assert(glyphWidth * nColumns == surface.GetWidth());
-	assert(glyphHeight * nRows == surface.GetHeight());
+	//might as well skip the SPACE char
+	if (firstChar == ' ')
+	{
+		firstChar++;
+	}
 }
-
-void Font::DrawText(const std::string& text, const Vei2& pos, Color color, Graphics& gfx) const
+void Font::DrawText(const std::string & text, const Pos & pos, Color color, Graphics & gfx) const
 {
 	// create effect functor
-	SpriteEffect::Substitution e{ chroma,color };
+	SpriteEffect::Substitution e{chroma, color};
 	// curPos is the pos that we are drawing to on the screen
 	auto curPos = pos;
 	for (auto c : text)
@@ -33,29 +35,30 @@ void Font::DrawText(const std::string& text, const Vei2& pos, Color color, Graph
 			// we don't want to advance the character position right for a newline
 			continue;
 		}
-		// only draw characters that are on the font sheet
-		// start at firstChar + 1 because might as well skip ' ' as well
-		else if (c >= firstChar + 1 && c <= lastChar)
+		else
 		{
-			// use DrawSpriteSubstitute so that we can choose the color of the font rendered
-			gfx.DrawSprite(curPos.x, curPos.y, MapGlyphRect(c), surface, e);
+			//Only draw characters that are on font sheet
+			if (c >= firstChar && c <= lastChar)
+			{
+				// use DrawSpriteSubstitute so that we can choose the color of the font rendered
+				gfx.DrawSprite(curPos.x, curPos.y, MapGlyphRect(c), surface, e);
+				curPos.x += glyphWidth;
+			}
 		}
 		// advance screen pos for next character
-		curPos.x += glyphWidth;
 	}
 }
 
 RectI Font::MapGlyphRect(char c) const
 {
 	assert(c >= firstChar && c <= lastChar);
-	// font sheet glyphs start at ' ', calculate index into sheet
-	const int glyphIndex = c - ' ';
-	// map 1d glyphIndex to 2D coordinates
+	//Set the amount of chars in one row
+	const int nColumns = surface.GetWidth() / glyphWidth;
+	//font sheet glyphs start at ' ', calculate index into the sheet
+	const int glyphIndex = c - firstChar;
+	//Calculate the x and y coordinate of the char in the bitmap
 	const int yGlyph = glyphIndex / nColumns;
 	const int xGlyph = glyphIndex % nColumns;
-	// convert the sheet grid coords to pixel coords in sheet
-	return RectI(
-	{ xGlyph * glyphWidth,yGlyph * glyphHeight },
-		glyphWidth, glyphHeight
-	);
+	return RectI({xGlyph * glyphWidth, yGlyph * glyphHeight},
+	glyphWidth, glyphHeight);
 }

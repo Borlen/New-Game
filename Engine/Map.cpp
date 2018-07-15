@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <assert.h>
 #include "File.h"
+#include "SpriteEffect.h"
 
 Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 	:
@@ -109,6 +110,13 @@ void Map::Load(std::string filePath)
 	}
 }
 
+void Map::Draw()
+{
+	DrawGrid();
+	DrawTileTextures();
+	DrawCharacter("Images/TileTextures/Character/Character.bmp");
+}
+
 void Map::DrawGrid() const
 {
 	{
@@ -129,10 +137,9 @@ void Map::DrawGrid() const
 	}
 }
 
-void Map::DrawCharacter() const
+void Map::DrawCharacter(const std::string fileName) const
 {
-	//SpriteCodex::DrawCharacterWithHorse(int(characterPos.x*dimension), int(characterPos.y*dimension), gfx);
-	SpriteCodex::DrawCharacter(int(characterPos.x*dimension), int(characterPos.y*dimension), gfx);
+	gfx.DrawSprite(characterPos.x * dimension, +characterPos.y * dimension, { "Images/TileTextures/Character/Character.bmp" }, SpriteEffect::Copy());
 }
 
 void Map::DrawTileTextures() const
@@ -176,6 +183,7 @@ int Map::GetHeight() const
 Map::Tile::Tile()
 {
 	AddType(8);
+	const std::string basePath = "Images/TileTextures";
 }
 
 void Map::Tile::AddType(int in_type)
@@ -184,39 +192,41 @@ void Map::Tile::AddType(int in_type)
 	switch (in_type)
 	{
 	case 1:
-		type.Draw = &SpriteCodex::DrawForest;
-		type.timeCost = 3;
+		texture = { basePath + "Nature/Forest.bmp" };
+		timeCost = 3;
 		break;
 	case 2:
-		type.Draw = &SpriteCodex::DrawMountain;
-		type.passable = false;
-		type.timeCost = 0;
+		texture = { basePath + "Nature/Mountain.bmp" };
+		passable = false;
+		timeCost = 0;
 		break;
 	case 3:
-		type.Draw = &SpriteCodex::DrawSwamp;
-		type.timeCost = 6;
+		texture = { basePath + "Nature/Swamp.bmp" };
+		timeCost = 6;
 		break;
 	case 4:
-		type.timeCost = 2;
+		texture = { basePath + "Error/Error.bmp" };
+		timeCost = 2;
 		break;
 	case 5:
-		type.Draw = &SpriteCodex::DrawVillageSize1;
-		type.timeCost = 1;
+		texture = { basePath + "Village/VillageSize1.bmp" };
+		timeCost = 1;
 		break;
 	case 6:
-		type.Draw = &SpriteCodex::DrawVillageSize2;
-		type.timeCost = 1;
+		texture = { basePath + "Village/VillageSize2.bmp" };
+		timeCost = 1;
 		break;
 	case 7:
-		type.Draw = &SpriteCodex::DrawVillageSize3;
-		type.timeCost = 1;
+		texture = { basePath + "Village/VillageSize3.bmp" };
+		timeCost = 1;
 		break;
 	case 8:
-		type.Draw = &SpriteCodex::DrawField;
-		type.timeCost = 2;
+		texture = { basePath + "Village/Field.bmp" };
+		timeCost = 2;
 		break;
 	case 9:
-		type.timeCost = 1;
+		texture = { basePath + "Road/Road.bmp" };
+		timeCost = 1;
 		break;
 	default:
 		assert(false);

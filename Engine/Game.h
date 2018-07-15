@@ -27,7 +27,7 @@
 #include "Map.h"
 #include "Time.h"
 #include "UserInterface.h"
-#include "Surface.h"
+#include "Font.h"
 
 class Game
 {
@@ -53,13 +53,6 @@ private:
 	Time time;
 	Map map;
 	UserInterface userInterface;
-	Surface H;
-	Surface e;
-	Surface l;
-	Surface o;
-	Surface W;
-	Surface r;
-	Surface d;
-	Surface exM;
+	Font homemadeFont;
 	/********************************/
 };

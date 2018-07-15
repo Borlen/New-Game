@@ -30,14 +30,7 @@ Game::Game(MainWindow& wnd)
 	time(0, 0, 0, 0, 0),
 	map(player.GetPos(), gfx, time),
 	userInterface(time, player, map, gfx),
-	H("Images/Fonts/Chars/CapitalH.bmp"),
-	e("Images/Fonts/Chars/E.bmp"),
-	l("Images/Fonts/Chars/L.bmp"),
-	o("Images/Fonts/Chars/O.bmp"),
-	W("Images/Fonts/Chars/CapitalW.bmp"),
-	r("Images/Fonts/Chars/R.bmp"),
-	d("Images/Fonts/Chars/D.bmp"),
-	exM("Images/Fonts/Chars/exM.bmp")
+	homemadeFont("chars/testFont.bmp", 12, 14)
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -100,21 +93,8 @@ void Game::Load()
 
 void Game::ComposeFrame()
 {
-	map.DrawGrid();
-	map.DrawTileTextures();
-	map.DrawCharacter();
+	map.Draw();
 	userInterface.DrawTime();
 	userInterface.DrawCharacterInfo();
-
-	gfx.DrawSprite(500, 500, H, SpriteEffect::Chroma{Colors::Black});
-	gfx.DrawSprite(510, 500, e, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(520, 500, l, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(525, 500, l, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(530, 500, o, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(560, 500, W, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(570, 500, o, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(580, 500, r, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(590, 500, l, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(600, 500, d, SpriteEffect::Chroma{ Colors::Black });
-	gfx.DrawSprite(610, 500, exM, SpriteEffect::Chroma{ Colors::Black });
+	homemadeFont.DrawText("Hello WORLD", {500,500}, Colors::White, gfx);
 }
