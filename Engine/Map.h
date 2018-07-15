@@ -22,6 +22,7 @@ public:
 	int GetDimension() const;
 	int GetWidth() const;
 	int GetHeight() const;
+	std::string getTileType(const Pos& tilePos) const;
 private:
 	class Tile
 	{
@@ -33,6 +34,7 @@ private:
 		void Draw(int x, int y, Graphics& gfx) const;
 		bool IsPassable() const;
 		int GetTimeCost() const;
+		int GetType() const;
 	private:
 		Surface texture;
 

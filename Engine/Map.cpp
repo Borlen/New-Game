@@ -180,6 +180,44 @@ int Map::GetHeight() const
 	return height;
 }
 
+std::string Map::getTileType(const Pos & tilePos) const
+{
+
+	switch (tiles[characterPos.x][characterPos.y].GetType())
+	{
+	case 1:
+		return ("Forest");
+		break;
+	case 2:
+		return ("Mountain");
+		break;
+	case 3:
+		return ("Swamp");
+		break;
+	case 4:
+		return ("Plains");
+		break;
+	case 5:
+		return ("Village");
+		break;
+	case 6:
+		return ("Village");
+		break;
+	case 7:
+		return ("Village");
+		break;
+	case 8:
+		return ("Field");
+		break;
+	case 9:
+		return ("Road");
+		break;
+	default:
+		assert(false);
+		return ("Error");
+	}
+}
+
 Map::Tile::Tile()
 {
 	AddType(8);
@@ -342,4 +380,9 @@ bool Map::Tile::IsPassable() const
 int Map::Tile::GetTimeCost() const
 {
 	return timeCost;
+}
+
+int Map::Tile::GetType() const
+{
+	return typeID;
 }

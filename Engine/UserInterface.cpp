@@ -32,6 +32,7 @@ void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
 	int x = 20;
 	int y = 5;
 	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapWidth * mapDimension + x, y }, color, gfx);
+	theChosenFont.DrawText(map.getTileType(characterPos), { mapWidth * mapDimension + x, y + 50 }, color, gfx);
 }
 
 void UserInterface::Draw(const Font& theChosenFont) const

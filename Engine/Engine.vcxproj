@@ -157,7 +157,6 @@
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="Surface.h" />
-    <ClInclude Include="Tile.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Pos.h" />
@@ -181,7 +180,6 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="SurfaceOD.cpp" />
-    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Pos.cpp" />
