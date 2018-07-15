@@ -1,122 +1,29 @@
 #include "UserInterface.h"
-#include "SpriteCodex.h"
 #include <assert.h>
 
-UserInterface::UserInterface(Time& in_time, Character& in_player, Map& in_map, Graphics& in_gfx)
+const std::string UserInterface::basePath = "Images/Interface";
+
+UserInterface::UserInterface(Time& in_time, Character& in_player, Map& in_map, Graphics& in_gfx, Color color)
 	:
 	time(in_time),
 	player(in_player),
 	map(in_map),
-	gfx(in_gfx)
+	gfx(in_gfx),
+	color(color)
 {
 }
-void UserInterface::DrawTime() const
+
+void UserInterface::DrawTime(const Font& theChosenFont) const
 {
 	const int y = 5;
-	const int x = Graphics::ScreenWidth - 55;
-	SpriteCodex::DrawTextTime(x - 50, y - 1, gfx);
-	SpriteCodex::DrawTextH(x + 12, y, gfx);
+	const int x = Graphics::ScreenWidth - 120;
 
-	switch (int(time.Get('h') / 10))
-	{
-	case 2:
-		SpriteCodex::DrawNumber2(x - 10, y, gfx);
-		switch (int(time.Get('h')) % 20)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		}
-		break;
-	case 1:
-		SpriteCodex::DrawNumber1(x - 10, y, gfx);
-		switch (int(time.Get('h')) % 10)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		case 5:
-			SpriteCodex::DrawNumber5(x, y, gfx);
-			break;
-		case 6:
-			SpriteCodex::DrawNumber6(x, y, gfx);
-			break;
-		case 7:
-			SpriteCodex::DrawNumber7(x, y, gfx);
-			break;
-		case 8:
-			SpriteCodex::DrawNumber8(x, y, gfx);
-			break;
-		case 9:
-			SpriteCodex::DrawNumber9(x, y, gfx);
-			break;
-		}
-		break;
-	case 0:
-		SpriteCodex::DrawNumber0(x - 10, y, gfx);
-		switch (int(time.Get('h')) % 10)
-		{
-		case 0:
-			SpriteCodex::DrawNumber0(x, y, gfx);
-			break;
-		case 1:
-			SpriteCodex::DrawNumber1(x, y, gfx);
-			break;
-		case 2:
-			SpriteCodex::DrawNumber2(x, y, gfx);
-			break;
-		case 3:
-			SpriteCodex::DrawNumber3(x, y, gfx);
-			break;
-		case 4:
-			SpriteCodex::DrawNumber4(x, y, gfx);
-			break;
-		case 5:
-			SpriteCodex::DrawNumber5(x, y, gfx);
-			break;
-		case 6:
-			SpriteCodex::DrawNumber6(x, y, gfx);
-			break;
-		case 7:
-			SpriteCodex::DrawNumber7(x, y, gfx);
-			break;
-		case 8:
-			SpriteCodex::DrawNumber8(x, y, gfx);
-			break;
-		case 9:
-			SpriteCodex::DrawNumber9(x, y, gfx);
-			break;
-		}
-		break;
-	}
-	SpriteCodex::DrawClock(x - 42, y + 20, gfx);
-	gfx.DrawLine(x - 14, y + 50, 15, (int(time.Get('h')) % 12) * 30 - 90, Colors::White);
+	theChosenFont.DrawText("Time: " + std::to_string(42) + "H", {x,y}, color, gfx);
+	gfx.DrawSprite(x + 20, y + 30, {basePath + "/Time/Clock.bmp"}, SpriteEffect::Chroma(Colors::Black));
+	gfx.DrawLine(x + 54, y + 64, 15, (int(time.Get('h')) % 12) * 30 - 90, Colors::White);
 }
-void UserInterface::DrawCharacterInfo() const
+
+void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
 {
 	int mapWidth = map.GetWidth();
 	int mapHeight = map.GetHeight();
@@ -124,92 +31,11 @@ void UserInterface::DrawCharacterInfo() const
 	Pos& characterPos = player.GetPos();
 	int x = 20;
 	int y = 5;
-	SpriteCodex::DrawTextX(mapWidth * mapDimension + x, 5, gfx);
-	SpriteCodex::DrawTextColon(mapWidth * mapDimension + x + 10, y, gfx);
-	assert(int(characterPos.x / 10) < 2);
-	if (int((characterPos.x + 1) / 10) == 1)
-	{
-		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 17, y, gfx);
-	}
-	else
-	{
-		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 17, y, gfx);
-	}
-	switch (int(characterPos.x + 1) % 10)
-	{
-	case 0:
-		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 1:
-		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 2:
-		SpriteCodex::DrawNumber2(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 3:
-		SpriteCodex::DrawNumber3(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 4:
-		SpriteCodex::DrawNumber4(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 5:
-		SpriteCodex::DrawNumber5(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 6:
-		SpriteCodex::DrawNumber6(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 7:
-		SpriteCodex::DrawNumber7(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 8:
-		SpriteCodex::DrawNumber8(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	case 9:
-		SpriteCodex::DrawNumber9(mapWidth * mapDimension + x + 27, y, gfx);
-		break;
-	}
-	SpriteCodex::DrawTextY(mapWidth * mapDimension + x, y + 15, gfx);
-	SpriteCodex::DrawTextColon(mapWidth * mapDimension + x + 10, y + 15, gfx);
-	assert(int(characterPos.y / 10) < 2);
-	if (int((characterPos.y + 1) / 10) == 1)
-	{
-		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 17, y + 15, gfx);
-	}
-	else
-	{
-		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 17, y + 15, gfx);
-	}
-	switch (int(characterPos.y + 1) % 10)
-	{
-	case 0:
-		SpriteCodex::DrawNumber0(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 1:
-		SpriteCodex::DrawNumber1(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 2:
-		SpriteCodex::DrawNumber2(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 3:
-		SpriteCodex::DrawNumber3(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 4:
-		SpriteCodex::DrawNumber4(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 5:
-		SpriteCodex::DrawNumber5(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 6:
-		SpriteCodex::DrawNumber6(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 7:
-		SpriteCodex::DrawNumber7(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 8:
-		SpriteCodex::DrawNumber8(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	case 9:
-		SpriteCodex::DrawNumber9(mapWidth * mapDimension + x + 27, y + 15, gfx);
-		break;
-	}
+	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapWidth * mapDimension + x, y }, color, gfx);
+}
+
+void UserInterface::Draw(const Font& theChosenFont) const
+{
+	DrawTime(theChosenFont);
+	DrawCharacterInfo(theChosenFont);
 }

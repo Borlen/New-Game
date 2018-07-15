@@ -20,7 +20,6 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "SpriteCodex.h"
 #include <fstream>
 
 Game::Game(MainWindow& wnd)
@@ -94,7 +93,6 @@ void Game::Load()
 void Game::ComposeFrame()
 {
 	map.Draw();
-	userInterface.DrawTime();
-	userInterface.DrawCharacterInfo();
+	userInterface.Draw(homemadeFont);
 	homemadeFont.DrawText("Hello WORLD", {500,500}, Colors::White, gfx);
 }

@@ -155,7 +155,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
-    <ClInclude Include="SpriteCodex.h" />
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Tile.h" />
@@ -180,7 +179,6 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="SpriteCodex.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="SurfaceOD.cpp" />
     <ClCompile Include="Tile.cpp" />
