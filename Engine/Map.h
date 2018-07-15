@@ -17,8 +17,8 @@ public:
 	void DrawCharacter(const std::string fileName) const;
 	void DrawTileTextures() const;
 	void MoveCharacter(Pos& dir);
-	void MoveCharacterOut();
-	void MoveCharacterIn();
+	void MoveCharacterOut(Pos& dir, int& timeSpent);
+	void MoveCharacterIn(Pos& dir, int& timeSpent);
 	void Move(const Pos dir);
 	int GetDimension() const;
 	Pos& GetSize() const;
@@ -26,6 +26,19 @@ public:
 private:
 	class Tile
 	{
+	public:
+		enum class tileTypes
+		{
+			forest,
+			mountain,
+			swamp,
+			plains,
+			villageSize1,
+			villageSize2,
+			villageSize3,
+			field,
+			road
+		};
 	public:
 		Tile();
 		void AddType(int in_type);
@@ -35,6 +48,8 @@ private:
 		bool IsPassable() const;
 		int GetTimeCost() const;
 		int GetType() const;
+		bool IsRiver(Pos& dir) const;
+		bool IsRoad(Pos& dir) const;
 	private:
 		Surface texture;
 
@@ -54,22 +69,6 @@ private:
 
 		//Path to folder containing tile textures
 		static const std::string basePath;
-
-		/*
-		Default: River can be added
-
-		0 = Map Border - Unaccessable, nothing can be added
-		1 = Forest - 3H
-		2 = Mountain - Unaccessable, nothing can be addedd
-		3 = Swamp - 6H
-		4 = Plains - 2H
-		5 = Village Size 1 - 1H
-		6 = Village Size 2 - 1H
-		7 = Village Size 3 - 1H
-		8 = Field - 2H
-		9 = Road - 1H
-		River += 1H
-		*/
 	};
 
 	static constexpr int dimension = 25;

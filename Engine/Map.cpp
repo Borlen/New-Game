@@ -187,11 +187,43 @@ void Map::MoveCharacter(Pos& dir)
 		{
 			if (tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].IsPassable())
 			{
-				time.Add(tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].GetTimeCost(), 'h');
+				int timeSpent = 0;
+				MoveCharacterOut(dir, timeSpent);
+				MoveCharacterIn(dir, timeSpent);
 				characterPos += dir;
+				time.Add(timeSpent, 'm');
 			}
 		}
 	}	
+}
+
+void Map::MoveCharacterOut(Pos& dir, int& timeSpent)
+{
+	//Check if there's river on the side character is going. If yes, then add +1H
+	timeSpent += tiles[characterPos.x + characterPos.y * width].GetTimeCost() / 2 * 60;
+	if (tiles[characterPos.x + characterPos.y * width].IsRiver(dir))
+	{
+		timeSpent += 60;
+	}
+	if (tiles[characterPos.x + characterPos.y * width].IsRoad(dir))
+	{
+		timeSpent -= 30;
+	}
+}
+
+void Map::MoveCharacterIn(Pos & dir, int& timeSpent)
+{
+	timeSpent += tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].GetTimeCost() / 2 * 60;
+	
+	//Check if there's river on the side character is coming from. If yes, then add +1H
+	if (tiles[characterPos.x + characterPos.y * width].IsRiver(dir - dir * 2))
+	{
+		timeSpent += 60;
+	}
+	if (tiles[characterPos.x + characterPos.y * width].IsRoad(dir - dir * 2))
+	{
+		timeSpent -= 30;
+	}
 }
 
 void Map::Move(Pos dir)
@@ -260,42 +292,42 @@ void Map::Tile::AddType(int in_type)
 	typeID = in_type;
 	switch (in_type)
 	{
-	case 1:
+	case int(tileTypes::forest):
 		texture = { basePath + "/Nature/Forest.bmp" };
 		timeCost = 3;
 		break;
-	case 2:
+	case int(tileTypes::mountain):
 		texture = { basePath + "/Nature/Mountain.bmp" };
 		passable = false;
 		timeCost = 0;
 		break;
-	case 3:
+	case int(tileTypes::swamp):
 		texture = { basePath + "/Nature/Swamp.bmp" };
 		timeCost = 6;
 		break;
-	case 4:
+	case int(tileTypes::plains):
 		texture = { basePath + "/Error/Error.bmp" };
 		timeCost = 2;
 		break;
-	case 5:
+	case int(tileTypes::villageSize1):
 		texture = { basePath + "/Village/VillageSize1.bmp" };
 		timeCost = 1;
 		break;
-	case 6:
+	case int(tileTypes::villageSize2):
 		texture = { basePath + "/Village/VillageSize2.bmp" };
 		timeCost = 1;
 		break;
-	case 7:
+	case int(tileTypes::villageSize3):
 		texture = { basePath + "/Village/VillageSize3.bmp" };
 		timeCost = 1;
 		break;
-	case 8:
+	case int(tileTypes::field):
 		texture = { basePath + "/Village/Field.bmp" };
 		timeCost = 2;
 		break;
-	case 9:
+	case int(tileTypes::road):
 		texture = { basePath + "/Error/Error.bmp" };
-		timeCost = 1;
+		timeCost = 2;
 		break;
 	default:
 		texture = { basePath + "/Error/Error.bmp" };
@@ -345,43 +377,14 @@ void Map::Tile::AddRoad(char side)
 
 void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 {
-	if (typeID != 8 && typeID != 9)
+	//Field is empty tile and road needs to be drawn separately because of the 4 directions road can go
+	if (typeID != int(tileTypes::field) && typeID != int(tileTypes::road))
 	{
 		gfx.DrawSprite(x, y, texture, SpriteEffect::Chroma(Colors::Black));
 	}
 
-	if (typeID == 8)
-	{
-		if (riverLeft)
-		{
-			for (int i = y + 1; i < y + dimension; i++)
-			{
-				gfx.PutPixel(x, i, 0, 180, 255);
-			}
-		}
-		if (riverTop)
-		{
-			for (int i = x + 1; i < x + dimension; i++)
-			{
-				gfx.PutPixel(i, y, 0, 180, 255);
-			}
-		}
-		if (riverRight)
-		{
-			for (int i = y + 1; i < y + dimension; i++)
-			{
-				gfx.PutPixel(x + dimension, i, 0, 180, 255);
-			}
-		}
-		if (riverBottom)
-		{
-			for (int i = x + 1; i < x + dimension; i++)
-			{
-				gfx.PutPixel(i, y + dimension, 0, 180, 255);
-			}
-		}
-	}
-	else if (typeID == 9)
+	 //If tile type is road, then draw it by the directions it goes
+	if (typeID == int(tileTypes::road))
 	{
 		if (roadLeft)
 		{
@@ -400,6 +403,36 @@ void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 			gfx.DrawSprite(x, y, { basePath + "/Road/LeftRoad.bmp" }, SpriteEffect::Chroma(Colors::Black));
 		}
 	}
+
+	//Draw out rivers
+	if (riverLeft)
+	{
+		for (int i = y + 1; i < y + dimension; i++)
+		{
+			gfx.PutPixel(x, i, 0, 180, 255);
+		}
+	}
+	if (riverTop)
+	{
+		for (int i = x + 1; i < x + dimension; i++)
+		{
+			gfx.PutPixel(i, y, 0, 180, 255);
+		}
+	}
+	if (riverRight)
+	{
+		for (int i = y + 1; i < y + dimension; i++)
+		{
+			gfx.PutPixel(x + dimension, i, 0, 180, 255);
+		}
+	}
+	if (riverBottom)
+	{
+		for (int i = x + 1; i < x + dimension; i++)
+		{
+			gfx.PutPixel(i, y + dimension, 0, 180, 255);
+		}
+	}
 }
 
 bool Map::Tile::IsPassable() const
@@ -415,4 +448,48 @@ int Map::Tile::GetTimeCost() const
 int Map::Tile::GetType() const
 {
 	return typeID;
+}
+
+bool Map::Tile::IsRiver(Pos & dir) const
+{
+	if (dir.x == 1)
+	{
+		return riverRight;
+	}
+	if (dir.x == -1)
+	{
+		return riverLeft;
+	}
+	if (dir.y == 1)
+	{
+		return riverBottom;
+	}
+	if (dir.y == -1)
+	{
+		return riverTop;
+	}
+	assert(false);
+	return false;
+}
+
+bool Map::Tile::IsRoad(Pos & dir) const
+{
+	if (dir.x == 1)
+	{
+		return roadRight;
+	}
+	if (dir.x == -1)
+	{
+		return roadLeft;
+	}
+	if (dir.y == 1)
+	{
+		return roadBottom;
+	}
+	if (dir.y == -1)
+	{
+		return roadTop;
+	}
+	assert(false);
+	return false;
 }
