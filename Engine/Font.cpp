@@ -2,16 +2,19 @@
 #include <cassert>
 #include "SpriteEffect.h"
 
-Font::Font(const std::string& filename, int glyphWidth, int glyphHeight, char firstChar, char lastChar, Color chroma)
+Font::Font(const std::string& filePath, int spacing, int glyphHeight, char firstChar, char lastChar, Color chroma)
 	:
-	surface(filename),
 	chroma(chroma),
-	glyphWidth(glyphWidth),
+	spacing(spacing),
 	glyphHeight(glyphHeight),
 	firstChar(firstChar),
 	lastChar(lastChar)
 {
 	//might as well skip the SPACE char
+	for (int i = 0; i < lastChar - firstChar; i++)
+	{
+		chars[i] = {filePath + std::to_string(i + firstChar) + ".bmp"};
+	}
 	if (firstChar == ' ')
 	{
 		firstChar++;
@@ -41,24 +44,38 @@ void Font::DrawText(const std::string & text, const Pos & pos, Color color, Grap
 			if (c >= firstChar && c <= lastChar)
 			{
 				// use DrawSpriteSubstitute so that we can choose the color of the font rendered
-				gfx.DrawSprite(curPos.x, curPos.y, MapGlyphRect(c), surface, e);
-				curPos.x += glyphWidth;
+				gfx.DrawSprite(curPos.x, curPos.y, chars[c - firstChar], e);
+				curPos.x += chars[c - firstChar].GetWidth() + spacing;
 			}
 		}
 		// advance screen pos for next character
 	}
 }
 
-RectI Font::MapGlyphRect(char c) const
+Pos Font::GetProportions(const std::string & text) const
 {
-	assert(c >= firstChar && c <= lastChar);
-	//Set the amount of chars in one row
-	const int nColumns = surface.GetWidth() / glyphWidth;
-	//font sheet glyphs start at ' ', calculate index into the sheet
-	const int glyphIndex = c - firstChar;
-	//Calculate the x and y coordinate of the char in the bitmap
-	const int yGlyph = glyphIndex / nColumns;
-	const int xGlyph = glyphIndex % nColumns;
-	return RectI({xGlyph * glyphWidth, yGlyph * glyphHeight},
-	glyphWidth, glyphHeight);
+	Pos curPos(0, glyphHeight);
+	for (auto c : text)
+	{
+		// on a newline character, reset x position and move down by 1 glyph height
+		if (c == '\n')
+		{
+			// carriage return
+			curPos.x = 0;
+			// line feed
+			curPos.y += glyphHeight;
+			// we don't want to advance the character position right for a newline
+			continue;
+		}
+		else
+		{
+			//Only draw characters that are on font sheet
+			if (c >= firstChar && c <= lastChar)
+			{
+				curPos.x += chars[c - firstChar].GetWidth() + spacing;
+			}
+		}
+		// advance screen pos for next character
+	}
+	return curPos;
 }

@@ -54,7 +54,7 @@ private:
 	private:
 		Surface texture;
 
-		bool passable;
+		bool passable = true;
 		int timeCost;
 		int typeID;
 

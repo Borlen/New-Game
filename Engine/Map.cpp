@@ -361,11 +361,11 @@ void Map::MoveCharacterIn(Pos & dir, int& timeSpent)
 	timeSpent += tiles[dir.x + characterPos.x + (dir.y + characterPos.y) * width].GetTimeCost() / 2 * 60;
 	
 	//Check if there's river on the side character is coming from. If yes, then add +1H
-	if (tiles[characterPos.x + characterPos.y * width].IsRiver(dir - dir * 2))
+	if (tiles[dir.x + characterPos.x + dir.y + characterPos.y * width].IsRiver(dir - dir * 2))
 	{
 		timeSpent += 60;
 	}
-	if (tiles[characterPos.x + characterPos.y * width].IsRoad(dir - dir * 2))
+	if (tiles[dir.x + characterPos.x + dir.y + characterPos.y * width].IsRoad(dir - dir * 2))
 	{
 		timeSpent -= 30;
 	}

@@ -7,18 +7,17 @@
 class Font
 {
 public:
-	Font(const std::string& filename, int glyphWidth, int glyphHeight, char firstChar = ' ', char LastChar = '~', Color chroma = Colors::Black);
+	Font(const std::string& filePath, int spacing, int glyphHeight, char firstChar = ' ', char LastChar = '~', Color chroma = Colors::Black);
 	void DrawText(const std::string& text, const Pos& pos, Color color, Graphics& gfx) const;
-private:
-	RectI MapGlyphRect(char c) const;
+	Pos	GetProportions(const std::string& text) const;
 private:
 	// holds the font sheet bitmap data
-	Surface surface;
+	Surface chars[128];
 	//Spacing between character
-	int glyphWidth;
 	int glyphHeight;
-	const char firstChar;
-	const char lastChar;
+	int spacing;
+	char firstChar;
+	char lastChar;
 	// font sheet chroma color
 	Color chroma;
 };
