@@ -7,6 +7,7 @@ class Character
 {
 public:
 	void Move(const Pos& dir, bool canMove);
+	void Draw(int mapDimension, int margin, Graphics& gfx) const;
 	Pos& GetPos();
 private:
 	Pos pos = { 0,0 };
