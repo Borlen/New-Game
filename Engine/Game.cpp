@@ -65,7 +65,7 @@ void Game::UpdateModel()
 					dir = Pos(0, 1);
 					break;
 			}
-			map.MoveCharacter(dir);
+			player.Move(dir, map.MoveCharacter(dir));
 		}
 	}
 
@@ -94,5 +94,4 @@ void Game::ComposeFrame()
 {
 	map.Draw();
 	userInterface.Draw(homemadeFont);
-	homemadeFont.DrawText("Hello WORLD", {500,500}, Colors::White, gfx);
 }

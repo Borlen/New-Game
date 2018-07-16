@@ -6,7 +6,7 @@
 class Character
 {
 public:
-	void Move(const Pos& dir);
+	void Move(const Pos& dir, bool canMove);
 	Pos& GetPos();
 private:
 	Pos pos = { 0,0 };

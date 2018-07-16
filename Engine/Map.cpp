@@ -15,109 +15,112 @@ Map::Map(Pos & in_charPos, Graphics & in_gfx, Time& in_time)
 void Map::Load(std::string filePath)
 {
 	std::string ch = File::GetString(filePath);
-	std::string tileType;
-	bool continues = false;
-	bool creatingRoad = false;
-	bool xSizeIsSet = false;
-	bool ySizeIsSet = false;
-	int x = 0;
-	int y = 0;
+	bool firstRun = true;
 
-	for (int i = 0; i < ch.length() && y < height; i++)
+	//Iterate until the file runs out of chars
+	int i = 0;
+	while (i < ch.length())
 	{
-		if (ch[i] == 76 || ch[i] == 84 || ch[i] == 82 || ch[i] == 66)
+		if (firstRun)
 		{
-			if (continues)
+			std::string xMapSize;
+			xMapSize = ch[i];
+			int j = 1;
+			while (ch[i + j] >= '0' && ch[i + j] <= '9')
 			{
-				tiles[x + y * width].AddRiver(ch[i]);
+				xMapSize += ch[i + j];
+				j++;
 			}
-			else if (creatingRoad)
+			width = std::stoi(xMapSize);
+
+			std::string yMapSize;
+			yMapSize = ch[i + j + 1];
+			j += 2;
+			while (ch[i + j] >= '0' && ch[i + j] <= '9')
 			{
-				tiles[x + y * width].AddRoad(ch[i]);
+				yMapSize += ch[i + j];
+				j++;
 			}
+			height = std::stoi(yMapSize);
+			i += j;
+			firstRun = false;
+		}
+
+		if (ch[i] == '[')
+		{
+			int j = 0;
+			while (!(ch[i + j] >= '0' && ch[i + j] <= '9') && i + j < ch.length())
+			{
+				j++;
+			}
+
+			std::string xCoords;
+			xCoords = ch[i + j];
+			j++;
+			while (ch[i + j] >= '0' && ch[i + j] <= '9')
+			{
+				xCoords += ch[i + j];
+				j++;
+			}
+			int xCoordsNum = std::stoi(xCoords);
+
+			while (!(ch[i + j] >= '0' && ch[i + j] <= '9') && i + j < ch.length())
+			{
+				j++;
+			}
+
+			std::string yCoords;
+			yCoords = ch[i + j];
+			j++;
+			while (ch[i + j] >= '0' && ch[i + j] <= '9')
+			{
+				yCoords = ch[i + j];
+				j++;
+			}
+			int yCoordsNum = std::stoi(yCoords);
+
+			while (ch[i + j] != '=' && i + j < ch.length())
+			{
+				j++;
+			}
+			while (!(ch[i + j] >= '0' && ch[i + j] <= '9') && i + j < ch.length())
+			{
+				j++;
+			}
+
+			std::string tileType;
+			tileType = ch[i + j ];
+			j++;
+			while (ch[i + j] >= '0' && ch[i + j] <= '9')
+			{
+				tileType = ch[i + j];
+				j++;
+			}
+			int tileTypeNum = std::stoi(tileType);
+			
+			if (tileTypeNum == 8)
+			{
+				while (ch[i + j] == 'L' || ch[i + j] == 'T' || ch[i + j] == 'R' || ch[i + j] == 'B')
+				{
+					tiles[xCoordsNum + yCoordsNum * width].AddRoad(ch[i + j]);
+					j++;
+				}
+			}
+
+			j++;
+			while (ch[i + j] == 'L' || ch[i + j] == 'T' || ch[i + j] == 'R' || ch[i + j] == 'B')
+			{
+				tiles[xCoordsNum + yCoordsNum * width].AddRiver(ch[i + j]);
+				j++;
+			}
+
+			tiles[xCoordsNum + yCoordsNum * width].AddType(tileTypeNum);
+			i += j;
 		}
 		else
 		{
-			if (continues)
-			{
-				continues = false;
-				if (x == width - 1)
-				{
-					x -= width - 1;
-					y++;
-				}
-				else
-				{
-					x++;
-				}
-			}
-			if (creatingRoad)
-			{
-				creatingRoad = false;
-				if (x == width - 1)
-				{
-					x -= width - 1;
-					y++;
-				}
-				else
-				{
-					x++;
-				}
-			}
+			i++;
 		}
-
-		if (ch[i] == 57)
-		{
-			tileType = ch[i];
-			tiles[x + y * width].AddType(std::stoi(tileType));
-			creatingRoad = true;
-		}
-
-		if (ch[i] < 57 && ch[i] > 47)
-		{
-			if (continues)
-			{
-				tileType += ch[i];
-			}
-			else
-			{
-				tileType = ch[i];
-				continues = true;
-			}
-
-		}
-		else
-		{
-			if (continues)
-			{
-				if (!xSizeIsSet || !ySizeIsSet)
-				{
-					if (!xSizeIsSet)
-						width = std::stoi(tileType);
-					if (!ySizeIsSet)
-						height = std::stoi(tileType);
-				}
-				else
-				{
-					tiles[x + y * width].AddType(std::stoi(tileType));
-					continues = false;
-
-					if (x == width - 1)
-					{
-						x -= width - 1;
-						y++;
-					}
-					else
-					{
-						x++;
-					}
-				}
-			}
-		}
-	}
-	if (y < height) 
-	{
-		//Add warning?
 	}
 }
 
@@ -164,7 +167,7 @@ void Map::DrawTileTextures() const
 	}
 }
 
-void Map::MoveCharacter(Pos& dir)
+bool Map::MoveCharacter(Pos& dir)
 {
 	//Calculate center of the map, coordinates of visible area of the map and coordinates of map edge
 	Pos futureCharacterPos = characterPos + dir;
@@ -180,6 +183,7 @@ void Map::MoveCharacter(Pos& dir)
 	if (futureCharacterPos.x > xMapCenter && xVisibleArea < xMapEdge || futureCharacterPos.x < xMapCenter && xOffset * dimension > 0 || futureCharacterPos.y > yMapCenter && yVisibleArea < yMapEdge || futureCharacterPos.y < yMapCenter && yOffset * dimension > 0)
 	{
 		Move(dir);
+		return false;
 	} 
 	else
 	{
@@ -192,6 +196,7 @@ void Map::MoveCharacter(Pos& dir)
 				MoveCharacterIn(dir, timeSpent);
 				characterPos += dir;
 				time.Add(timeSpent, 'm');
+				return true;
 			}
 		}
 	}	
@@ -237,7 +242,7 @@ int Map::GetDimension() const
 	return dimension;
 }
 
-Pos & Map::GetSize() const
+Pos Map::GetSize() const
 {
 	return Pos(xMapSize, yMapSize);
 }
@@ -378,7 +383,7 @@ void Map::Tile::AddRoad(char side)
 void Map::Tile::Draw(int x, int y, Graphics & gfx) const
 {
 	//Field is empty tile and road needs to be drawn separately because of the 4 directions road can go
-	if (typeID != int(tileTypes::field) && typeID != int(tileTypes::road))
+	if (typeID != int(tileTypes::plains) && typeID != int(tileTypes::road))
 	{
 		gfx.DrawSprite(x, y, texture, SpriteEffect::Chroma(Colors::Black));
 	}

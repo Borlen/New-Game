@@ -1,9 +1,12 @@
 #include "Character.h"
 #include <assert.h>
 
-void Character::Move(const Pos& dir)
+void Character::Move(const Pos& dir, bool canMove)
 {
-	pos += dir;
+	if (canMove)
+	{
+		pos += dir;
+	}
 }
 
 Pos& Character::GetPos()

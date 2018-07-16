@@ -16,12 +16,12 @@ public:
 	void DrawGrid() const;
 	void DrawCharacter(const std::string fileName) const;
 	void DrawTileTextures() const;
-	void MoveCharacter(Pos& dir);
+	bool MoveCharacter(Pos& dir);
 	void MoveCharacterOut(Pos& dir, int& timeSpent);
 	void MoveCharacterIn(Pos& dir, int& timeSpent);
 	void Move(const Pos dir);
 	int GetDimension() const;
-	Pos& GetSize() const;
+	Pos GetSize() const;
 	std::string getTileType(const Pos& tilePos) const;
 private:
 	class Tile
