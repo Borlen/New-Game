@@ -21,8 +21,9 @@ public:
 	void Move(const Pos dir);
 	int GetDimension() const;
 	Pos GetSize() const;
+	Pos GetOffset() const;
 	int GetMargin() const;
-	std::string getTileType(const Pos& tilePos) const;
+	std::string GetTileType(const Pos& tilePos) const;
 private:
 	class Tile
 	{
@@ -53,7 +54,7 @@ private:
 	private:
 		Surface texture;
 
-		bool passable = true;
+		bool passable;
 		int timeCost;
 		int typeID;
 

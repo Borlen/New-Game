@@ -93,6 +93,6 @@ void Game::Load()
 void Game::ComposeFrame()
 {
 	map.Draw();
-	player.Draw(map.GetDimension(), map.GetMargin(), gfx);
+	player.Draw(map.GetDimension(), map.GetOffset(), map.GetMargin(), gfx);
 	userInterface.Draw(homemadeFont);
 }

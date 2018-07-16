@@ -55,6 +55,7 @@ int Time::Get(char format) const
 		//return float(years / 60 / 24 / 29 / 12 + hours / 24 / 29 / 12 + days / 29 / 12 + months / 12 + years);
 	default:
 		assert(false);
+		return 0;
 	}
 }
 

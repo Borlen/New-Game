@@ -30,7 +30,7 @@ void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
 	int x = 20;
 	int y = 5;
 	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapSize.x + x, y }, color, gfx);
-	theChosenFont.DrawText(map.getTileType(characterPos), { mapSize.x + x, y + 50 }, color, gfx);
+	theChosenFont.DrawText(map.GetTileType(characterPos), { mapSize.x + x, y + 50 }, color, gfx);
 }
 
 void UserInterface::Draw(const Font& theChosenFont) const

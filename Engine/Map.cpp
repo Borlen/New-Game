@@ -115,6 +115,7 @@ void Map::Load(std::string filePath)
 			}
 
 			//Iterate until the end of river side setting chars
+			j++;
 			while ((ch[i + j] == 'L' || ch[i + j] == 'T' || ch[i + j] == 'R' || ch[i + j] == 'B') && i + j < ch.length())
 			{
 				tiles[xCoordsNum + yCoordsNum * width].AddRiver(ch[i + j]);
@@ -297,8 +298,6 @@ bool Map::MoveCharacter(Pos& dir)
 {
 	//Calculate center of the map, coordinates of visible area of the map and coordinates of map edge
 	Pos futureCharacterPos = characterPos + dir;
-	const int xMapCenter = int(xSize / dimension / 2);
-	const int yMapCenter = int(ySize / dimension / 2);
 	const int xVisibleArea = xSize + xOffset * dimension;
 	const int yVisibleArea = ySize + yOffset * dimension;
 	const int xMapEdge = width * dimension;
@@ -306,23 +305,24 @@ bool Map::MoveCharacter(Pos& dir)
 
 	//Check if the half of the map character is on has a visible edge, if not, move the map
 	//towards the edge instead of moving the character
-	if (futureCharacterPos.x > xMapCenter && xVisibleArea < xMapEdge || futureCharacterPos.x < xMapCenter && xOffset * dimension > 0 || futureCharacterPos.y > yMapCenter && yVisibleArea < yMapEdge || futureCharacterPos.y < yMapCenter && yOffset * dimension > 0)
+	if ((futureCharacterPos.x - xOffset) * 2 * dimension > xSize && xVisibleArea < xMapEdge || (futureCharacterPos.x - xOffset) * 2 * dimension < xSize && xOffset * dimension > 0 || (futureCharacterPos.y - yOffset) * dimension * 2 > ySize && yVisibleArea < yMapEdge || (futureCharacterPos.y - yOffset) * dimension * 2 < ySize && yOffset * dimension > 0)
 	{
-		if (tiles[futureCharacterPos.x + xOffset + (futureCharacterPos.y + yOffset) * width].IsPassable())
+		if (tiles[futureCharacterPos.x + futureCharacterPos.y * width].IsPassable())
 		{
 			Move(dir);
 			int timeSpent = 0;
 			MoveCharacterOut(dir, timeSpent);
 			MoveCharacterIn(dir, timeSpent);
 			time.Add(timeSpent, 'm');
+			return true;
 		}
-		return true;
+		return false;
 	} 
 	else
 	{
-		if (!(dir.x + characterPos.x < 0 || (dir.x + characterPos.x) * dimension >= xSize || dir.y + characterPos.y < 0 || (dir.y + characterPos.y) * dimension >= ySize))
+		if (!(dir.x + characterPos.x < 0 || (dir.x + characterPos.x) * dimension >= xSize + xOffset * dimension || dir.y + characterPos.y < 0 || (dir.y + characterPos.y) * dimension >= ySize + yOffset * dimension))
 		{
-			if (tiles[futureCharacterPos.x + xOffset + (futureCharacterPos.y + yOffset) * width].IsPassable())
+			if (tiles[futureCharacterPos.x + futureCharacterPos.y * width].IsPassable())
 			{
 				int timeSpent = 0;
 				MoveCharacterOut(dir, timeSpent);
@@ -387,15 +387,20 @@ Pos Map::GetSize() const
 	return Pos(xSize, ySize);
 }
 
+Pos Map::GetOffset() const
+{
+	return Pos(xOffset,yOffset);
+}
+
 int Map::GetMargin() const
 {
 	return extraEdgeWidth;
 }
 
-std::string Map::getTileType(const Pos & tilePos) const
+std::string Map::GetTileType(const Pos & tilePos) const
 {
 
-	switch (tiles[characterPos.x + characterPos.y * width].GetType())
+	switch (tiles[tilePos.x + tilePos.y * width].GetType())
 	{
 	case 1:
 		return ("Forest");
@@ -432,7 +437,7 @@ std::string Map::getTileType(const Pos & tilePos) const
 
 Map::Tile::Tile()
 {
-	AddType(8);
+	AddType(3);
 }
 
 const std::string Map::Tile::basePath = "Images/TileTextures";

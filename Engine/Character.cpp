@@ -9,9 +9,9 @@ void Character::Move(const Pos& dir, bool canMove)
 	}
 }
 
-void Character::Draw(int mapDimension, int margin, Graphics& gfx) const
+void Character::Draw(int mapDimension, Pos& offset, int margin, Graphics& gfx) const
 {
-	gfx.DrawSprite(pos.x * mapDimension + 1 + margin, + pos.y * mapDimension + 1 + margin, { "Images/TileTextures/Character/Character.bmp" }, SpriteEffect::Chroma(Colors::Black));
+	gfx.DrawSprite((pos.x - offset.x) * mapDimension + 1 + margin, + (pos.y - offset.y) * mapDimension + 1 + margin, { "Images/TileTextures/Character/Character.bmp" }, SpriteEffect::Chroma(Colors::Black));
 }
 
 Pos& Character::GetPos()
