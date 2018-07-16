@@ -26,7 +26,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	time(0, 0, 0, 0, 0),
+	time(0, 0, 0, 1, 1420),
 	map(player.GetPos(), gfx, time),
 	userInterface(time, player, map, gfx),
 	homemadeFont("chars/testFont.bmp", 12, 14)
