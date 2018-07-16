@@ -28,6 +28,7 @@
 #include "Time.h"
 #include "UserInterface.h"
 #include "Font.h"
+#include "Button.h"
 
 class Game
 {
@@ -54,5 +55,6 @@ private:
 	Map map;
 	UserInterface userInterface;
 	Font homemadeFont;
+	Button testButton;
 	/********************************/
 };

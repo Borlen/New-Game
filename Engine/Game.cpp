@@ -29,7 +29,8 @@ Game::Game(MainWindow& wnd)
 	time(0, 0, 0, 1, 1420),
 	map(player.GetPos(), gfx, time),
 	userInterface(time, player, map, gfx),
-	homemadeFont("chars/testFont.bmp", 12, 14)
+	homemadeFont("chars/", 4, 12, ' ', 127),
+	testButton(Colors::Gray, Colors::White, "CLICK ME")
 {
 	wnd.kbd.DisableAutorepeat();
 }
@@ -95,4 +96,5 @@ void Game::ComposeFrame()
 	map.Draw();
 	player.Draw(map.GetDimension(), map.GetOffset(), map.GetMargin(), gfx);
 	userInterface.Draw(homemadeFont);
+	testButton.Draw(gfx, homemadeFont);
 }
