@@ -56,5 +56,7 @@ private:
 	UserInterface userInterface;
 	Font homemadeFont;
 	Button testButton;
+	Button buttons[10];
+	int buttonCount = 1;
 	/********************************/
 };

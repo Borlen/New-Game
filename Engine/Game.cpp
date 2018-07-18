@@ -26,12 +26,12 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	time(0, 0, 0, 1, 1420),
+	time(0, 6, 1, 1, 1420),
 	map(player.GetPos(), gfx, time),
 	userInterface(time, player, map, gfx),
-	homemadeFont("chars/", 4, 12, ' ', 127),
-	testButton(Colors::Gray, Colors::White, "CLICK ME")
+	homemadeFont("chars/", 4, 12, ' ', 127)
 {
+	buttons[0] = { 400, 400, 500, 500, Colors::Gray, Colors::White, homemadeFont, gfx, false, true, "CLICK ME" };
 	wnd.kbd.DisableAutorepeat();
 }
 
@@ -51,40 +51,50 @@ void Game::UpdateModel()
 		if (key.IsRelease()) 
 		{
 			Pos dir;
+			bool movePlayer = false;
 			switch (key.GetCode()) 
 			{
 				case VK_LEFT:
 					dir = Pos(-1, 0);
+					movePlayer = true;
 					break;
 				case VK_UP:
 					dir = Pos(0, -1);
+					movePlayer = true;
 					break;
 				case VK_RIGHT:
 					dir = Pos(1, 0);
+					movePlayer = true;
 					break;
 				case VK_DOWN:
 					dir = Pos(0, 1);
+					movePlayer = true;
 					break;
 			}
-			player.Move(dir, map.MoveCharacter(dir));
+			if (movePlayer) 
+			{
+				player.Move(dir, map.MoveCharacter(dir));
+			}
 		}
 	}
 
-	/*
 	while (!wnd.mouse.IsEmpty())
 	{
 		Mouse::Event mouseEvent = wnd.mouse.Read();
 		switch (mouseEvent.GetType())
 		{
-		case Mouse::Event::Type::WheelDown:
-			brd.DecreaseZoom();
-			break;
-		case Mouse::Event::Type::WheelUp:
-			brd.IncreaseZoom();
+		case Mouse::Event::Type::LRelease:
+			std::pair<int, int> clickPos = mouseEvent.GetPos();
+			for (int i = 0; i < buttonCount; i++)
+			{
+				if (buttons[i].IsVisible())
+				{
+
+				}
+			}
 			break;
 		}
 	}
-	*/
 }
 
 void Game::Load()
@@ -96,5 +106,11 @@ void Game::ComposeFrame()
 	map.Draw();
 	player.Draw(map.GetDimension(), map.GetOffset(), map.GetMargin(), gfx);
 	userInterface.Draw(homemadeFont);
-	testButton.Draw(gfx, homemadeFont);
+	for (int i = 0; i < buttonCount; i++)
+	{
+		if (buttons[i].IsVisible())
+		{
+			buttons[i].Draw();
+		}
+	}
 }

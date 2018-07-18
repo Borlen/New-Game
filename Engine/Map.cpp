@@ -402,17 +402,20 @@ std::string Map::GetTileType(const Pos & tilePos) const
 
 	switch (tiles[tilePos.x + tilePos.y * width].GetType())
 	{
-	case 1:
+	case 0:
 		return ("Forest");
 		break;
-	case 2:
+	case 1:
 		return ("Mountain");
 		break;
-	case 3:
+	case 2:
 		return ("Swamp");
 		break;
-	case 4:
+	case 3:
 		return ("Plains");
+		break;
+	case 4:
+		return ("Village");
 		break;
 	case 5:
 		return ("Village");
@@ -421,12 +424,9 @@ std::string Map::GetTileType(const Pos & tilePos) const
 		return ("Village");
 		break;
 	case 7:
-		return ("Village");
-		break;
-	case 8:
 		return ("Field");
 		break;
-	case 9:
+	case 8:
 		return ("Road");
 		break;
 	default:

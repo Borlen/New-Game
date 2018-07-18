@@ -1,5 +1,8 @@
 #include "UserInterface.h"
 #include <assert.h>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 
 const std::string UserInterface::basePath = "Images/Interface";
 
@@ -17,8 +20,9 @@ void UserInterface::DrawTime(const Font& theChosenFont) const
 {
 	const int y = 5;
 	const int x = Graphics::ScreenWidth - 120;
-
-	theChosenFont.DrawText("Time: " + std::to_string(42) + "H", {x,y + 50}, color, gfx);
+	std::stringstream hours;
+	hours << std::setfill('0') << std::setw(2) << std::to_string(time.Get('h'));
+	theChosenFont.DrawText("Time: " + hours.str() + "H", {x - 50, y}, color, gfx);
 	std::string month;
 	std::string season;
 	switch (time.Get('o'))
@@ -74,10 +78,12 @@ void UserInterface::DrawTime(const Font& theChosenFont) const
 		month = "Error";
 		break;
 	}
-	theChosenFont.DrawText(std::to_string(time.Get('d')) + "of" + month + ", " + std::to_string(time.Get('y')), { x,y }, color, gfx);
-	theChosenFont.DrawText(season, { x + 25,y + 20 }, color, gfx);
-	gfx.DrawSprite(x + 20, y + 80, {basePath + "/Time/Clock.bmp"}, SpriteEffect::Chroma(Colors::Black));
-	gfx.DrawLine(x + 54, y + 114, 15, (int(time.Get('h')) % 12) * 30 - 90, Colors::White);
+	std::stringstream days;
+	days << std::setfill('0') << std::setw(2) << time.Get('d');
+	theChosenFont.DrawText(days.str() + " of " + month + ", " + std::to_string(time.Get('y')), { x - 100, y + 110 }, color, gfx);
+	theChosenFont.DrawText(season, { x - 35,y + 130 }, color, gfx);
+	gfx.DrawSprite(x - 45, y + 20, {basePath + "/Time/Clock.bmp"}, SpriteEffect::Chroma(Colors::Black));
+	gfx.DrawLine(x - 11, y + 54, 15, (int(time.Get('h')) % 12) * 30 - 90, Colors::White);
 }
 
 void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
@@ -86,7 +92,12 @@ void UserInterface::DrawCharacterInfo(const Font& theChosenFont) const
 	Pos& characterPos = player.GetPos();
 	int x = 20;
 	int y = 5;
-	theChosenFont.DrawText("X: " + std::to_string(characterPos.x) + "\n" + "Y: " + std::to_string(characterPos.y), { mapSize.x + x, y }, color, gfx);
+	std::stringstream xCoords;
+	std::stringstream yCoords;
+	xCoords << std::setfill('0') << std::setw(2) << std::to_string(characterPos.x);
+	yCoords << std::setfill('0') << std::setw(2) << std::to_string(characterPos.y);
+	theChosenFont.DrawText("X: " + xCoords.str(), { mapSize.x + x, y }, color, gfx);
+	theChosenFont.DrawText("Y: " + yCoords.str(), { mapSize.x + x, y + 16 }, color, gfx);
 	theChosenFont.DrawText(map.GetTileType(characterPos), { mapSize.x + x, y + 50 }, color, gfx);
 }
 

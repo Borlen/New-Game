@@ -5,12 +5,18 @@
 class Button
 {
 public:
-	Button(Color bgC, Color txtC, std::string text);
+	Button();
+	Button(int x0, int y0, int x1, int y1, Color bgC, Color txtC, Font& font, Graphics& gfx, bool visible = false, bool addText = false, std::string in_text = " ");
 	bool Clicked(int x, int y);
-	void Draw(Graphics & gfx, Font& theChosenFont) const;
+	void Draw() const;
+	bool IsVisible();
 private:
-	RectI button = { 400, 580, 400, 450 };
+	RectI button = {0,0,0,0};
 	Color backgroundColor;
 	Color textColor;
+	Font *theChosenFont;
+	Graphics *gfx;
 	std::string text;
+	bool visible;
+	bool showText;
 };

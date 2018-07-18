@@ -1,9 +1,18 @@
 20x20
-[6,8] = 2 LT
-[5,8] = 4 T
-[4,8] = 5 T
+[0,0] = 2 LT 
+[1,0] = 4 T 
+[2,0] = 5 T
 [3,8] = 6 T
 [2,8] = 7
 [1,8] = 1
 [0,8] = 3
 [1,1] = 8LT R
+
+
+
+
+L Q T X K J L I
+V L R G N M I O
+G T R L U R N I
+V G R R R R S T
+D O P Q R L D A

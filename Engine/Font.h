@@ -8,7 +8,7 @@ class Font
 {
 public:
 	Font(const std::string& filePath, int spacing, int glyphHeight, char firstChar = ' ', char LastChar = '~', Color chroma = Colors::Black);
-	void DrawText(const std::string& text, const Pos& pos, Color color, Graphics& gfx) const;
+	void DrawText(const std::string& text, const Pos& pos, Color color, Graphics& gfx, bool inMiddle = false) const;
 	Pos	GetProportions(const std::string& text) const;
 private:
 	// holds the font sheet bitmap data

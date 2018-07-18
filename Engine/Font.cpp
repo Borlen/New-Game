@@ -20,14 +20,25 @@ Font::Font(const std::string& filePath, int spacing, int glyphHeight, char first
 		firstChar++;
 	}
 }
-void Font::DrawText(const std::string & text, const Pos & pos, Color color, Graphics & gfx) const
+void Font::DrawText(const std::string & text, const Pos & pos, Color color, Graphics & gfx, bool inMiddle) const
 {
 	// create effect functor
 	SpriteEffect::Substitution e{chroma, color};
 	// curPos is the pos that we are drawing to on the screen
-	auto curPos = pos;
+	Pos curPos;
+	if (inMiddle)
+	{
+		curPos.x = pos.x - int(GetProportions(text).x / 2);
+		curPos.y = pos.y - int(GetProportions(text).y / 2);
+	}
+	else
+	{
+		curPos = pos;
+	}
+
 	for (auto c : text)
 	{
+		 c = toupper(c);
 		// on a newline character, reset x position and move down by 1 glyph height
 		if (c == '\n')
 		{
